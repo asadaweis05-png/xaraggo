@@ -293,9 +293,11 @@ function addToCart(productId) {
 function renderCart() {
   const container = document.getElementById('cart-drawer-items');
   const countBadge = document.getElementById('cart-count');
+  const subtotalEl = document.getElementById('cart-subtotal-price');
+  if (!container) return;
   
   const totalItems = state.cart.reduce((acc, item) => acc + item.qty, 0);
-  countBadge.innerText = totalItems;
+  if (countBadge) countBadge.innerText = totalItems;
   
   if (state.cart.length === 0) {
     container.innerHTML = `
@@ -304,7 +306,7 @@ function renderCart() {
         <p>Gaadhigaaga waxba kuma jiraan.</p>
       </div>
     `;
-    document.getElementById('cart-subtotal-price').innerText = formatPrice(0);
+    if (subtotalEl) subtotalEl.innerText = formatPrice(0);
     return;
   }
   
@@ -328,7 +330,7 @@ function renderCart() {
     `;
   }).join('');
   
-  document.getElementById('cart-subtotal-price').innerText = formatPrice(subtotal);
+  if (subtotalEl) subtotalEl.innerText = formatPrice(subtotal);
 }
 
 function updateCartQty(id, delta) {
@@ -356,7 +358,8 @@ function toggleWishlist(id) {
   } else {
     state.wishlist.push(id);
   }
-  document.getElementById('wishlist-count').innerText = state.wishlist.length;
+  const badge = document.getElementById('wishlist-count');
+  if (badge) badge.innerText = state.wishlist.length;
   renderBestSellers();
   renderShopCatalog();
   renderWishlist();
@@ -367,6 +370,7 @@ function toggleWishlist(id) {
 
 function renderWishlist() {
   const container = document.getElementById('wishlist-drawer-items');
+  if (!container) return;
   const wishProducts = products.filter(p => state.wishlist.includes(p.id));
   
   if (wishProducts.length === 0) {

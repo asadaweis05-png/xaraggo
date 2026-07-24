@@ -546,6 +546,35 @@
 
   </main>
 
+  <!-- SEARCH DRAWER -->
+  <div id="search-drawer" class="drawer-overlay">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h3 class="font-serif" style="font-size: 1.4rem;"><i class="fa-solid fa-magnifying-glass"></i> Raadi Alaabta</h3>
+        <button class="icon-btn" onclick="toggleDrawer('search-drawer')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="drawer-body">
+        <input type="text" placeholder="Raadi alaab (Tusaale: Serum, Dirac, Cabaaya...)" class="ai-search-input" onkeyup="handleGlobalSearch(this.value)" style="width: 100%; padding: 0.85rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 1.5rem; outline: none; background: var(--bg-primary); color: var(--text-primary);">
+        <div id="global-search-results">
+          <!-- Results -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WISHLIST DRAWER -->
+  <div id="wishlist-drawer" class="drawer-overlay">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h3 class="font-serif" style="font-size: 1.4rem;"><i class="fa-regular fa-heart"></i> Kaydkaaga (Wishlist)</h3>
+        <button class="icon-btn" onclick="toggleDrawer('wishlist-drawer')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="drawer-body" id="wishlist-drawer-items">
+        <!-- Rendered JS -->
+      </div>
+    </div>
+  </div>
+
   <!-- CART DRAWER (Gaadhiga Wax Iibsiga) -->
   <div id="cart-drawer" class="drawer-overlay">
     <div class="drawer-content">
