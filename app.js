@@ -735,9 +735,6 @@ function renderQuizStep() {
     </div>
   `;
 }
-        </div>
-      `).join('')}
-    </div>
   `;
 }
 
