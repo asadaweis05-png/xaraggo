@@ -78,149 +78,81 @@
   <!-- MAIN APP VIEWS CONTAINER -->
   <main id="app-content">
 
-    <!-- HOME VIEW -->
+    <!-- HOME VIEW (Simplified: AI Face Scan & Skin Quiz First) -->
     <section id="view-home" class="app-view">
-      <!-- Hero Banner -->
-      <div class="hero-section">
-        <div class="container">
-          <div class="hero-content">
-            <span class="hero-tag">🌟 Bilic – Quruxda iyo Labbiska Soomaaliyeed</span>
-            <h1 class="hero-title">Quruxdu Waxay La Kulantaa <span>Labbiska Casriga ah</span></h1>
-            <p class="hero-subtitle">Baro daryeelka saxda ah ee maqaarkaaga, hel talooyin ku salaysan AI, kana dooro labbis Soomaaliyeed oo tayo iyo qurux leh.</p>
-            <div class="hero-actions">
-              <button class="btn btn-gold" onclick="navigateTo('shop')">
-                <span>🧴 Dukaanka Daryeelka Maqaarka</span>
-              </button>
-              <button class="btn btn-primary" onclick="navigateTo('outfit-builder')">
-                <span>👗 Dukaanka Labbiska</span>
-              </button>
-              <button class="btn btn-outline" onclick="navigateTo('skin-quiz')" style="border-color: #FAF8F5; color: #FAF8F5;">
-                <span>✨ Bilow Imtixaanka Maqaarka</span>
-              </button>
-            </div>
-          </div>
+      
+      <!-- Minimal Luxury Hero Header -->
+      <div style="background: linear-gradient(135deg, var(--emerald-dark) 0%, #144229 100%); color: #FAF8F5; padding: 3.5rem 0 3rem; text-align: center; border-bottom: 3px solid var(--gold-primary);">
+        <div class="container" style="max-width: 800px;">
+          <span style="background: rgba(197, 160, 89, 0.2); color: var(--gold-primary); border: 1px solid var(--gold-primary); padding: 5px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; display: inline-block; margin-bottom: 1rem;">
+            ✨ Bilic — AI Beauty & Modest Fashion
+          </span>
+          <h1 class="font-serif" style="font-size: 2.8rem; margin-bottom: 0.75rem; color: #FFF;">
+            Falanqaynta Maqaarka & <span style="color: var(--gold-primary);">AI Vision</span>
+          </h1>
+          <p style="font-size: 1.05rem; opacity: 0.9; margin-bottom: 0; max-width: 650px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+            Soo hel nooca maqaarkaaga, hel talooyin iyo jadwalka daryeelka ee 100% Af-Soomaali ah adoo isticmaalaya Kamaradda AI ama Imtixaanka Maqaarka.
+          </p>
         </div>
       </div>
 
-      <!-- Quick Nav Strip (Adeegyada Bilic) -->
-      <div class="section" style="padding: 3rem 0; background: var(--bg-secondary); border-bottom: 1px solid var(--border-color);">
-        <div class="container">
-          <div class="section-header" style="margin-bottom: 2.5rem;">
-            <span class="section-subtitle">Adeegyada Bilic</span>
-            <h2 class="section-title">Adeegyada Ugu Muhiimsan</h2>
+      <!-- MAIN ACTION CARDS (DIRECT ACCESS: SCAN & QUIZ) -->
+      <div class="section container" style="padding-top: 2.5rem; padding-bottom: 2.5rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; max-width: 960px; margin: 0 auto;">
+          
+          <!-- CARD 1: REAL AI CAMERA FACE SCAN -->
+          <div style="background: var(--bg-card); border: 2px solid var(--gold-primary); border-radius: var(--radius-lg); padding: 2.25rem; text-align: center; box-shadow: var(--shadow-md); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div>
+              <div style="width: 76px; height: 76px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-primary), var(--emerald-dark)); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; box-shadow: 0 8px 20px rgba(197,160,89,0.3);">
+                <i class="fa-solid fa-camera" style="font-size: 2.2rem; color: #FFF;"></i>
+              </div>
+              <span style="font-size: 0.75rem; font-weight: 700; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 0.1em;">AI Vision Technology</span>
+              <h2 class="font-serif" style="font-size: 1.8rem; margin: 0.4rem 0 0.75rem; color: var(--emerald-dark);">
+                📸 Sawirka Wejiga (AI Scan)
+              </h2>
+              <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.75rem;">
+                Kamaradda wejigaaga ku aad! Gemini AI Vision waxay si sax ah u baaraysaa finanka, dufanka, qallaylka & dhibcaha madow.
+              </p>
+            </div>
+            <button class="btn btn-gold" style="width: 100%; padding: 0.95rem; font-size: 1rem; border-radius: var(--radius-md);" onclick="navigateTo('ai-skin-advisor'); setTimeout(() => startSkinCamera(), 300);">
+              ✨ Bilow Sawirka Wejiga (Camera)
+            </button>
           </div>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; cursor: pointer;" onclick="navigateTo('skin-quiz')">
-              <h3 class="font-serif" style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">🧴 Imtixaanka Maqaarka</h3>
-              <p style="font-size: 0.9rem; color: var(--text-secondary);">Ogow nooca maqaarkaaga oo hel talooyin kuu gaar ah.</p>
+
+          <!-- CARD 2: 6-QUESTION SKIN QUIZ -->
+          <div style="background: var(--bg-card); border: 2px solid var(--emerald-dark); border-radius: var(--radius-lg); padding: 2.25rem; text-align: center; box-shadow: var(--shadow-md); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div>
+              <div style="width: 76px; height: 76px; border-radius: 50%; background: linear-gradient(135deg, var(--emerald-dark), var(--emerald-light)); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; box-shadow: 0 8px 20px rgba(13,40,24,0.25);">
+                <i class="fa-solid fa-clipboard-list" style="font-size: 2.2rem; color: #FAF0CA;"></i>
+              </div>
+              <span style="font-size: 0.75rem; font-weight: 700; color: var(--emerald-dark); text-transform: uppercase; letter-spacing: 0.1em;">6 Suaalood oo Fudud</span>
+              <h2 class="font-serif" style="font-size: 1.8rem; margin: 0.4rem 0 0.75rem; color: var(--emerald-dark);">
+                📋 Imtixaanka Maqaarka
+              </h2>
+              <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.75rem;">
+                Ka jawaab 6 suaalood oo ku saabsan maqaarkaaga si aad u hesho jadwalka subaxda & habeenka iyo talooyinka ku habboon.
+              </p>
             </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; cursor: pointer;" onclick="navigateTo('skin-quiz')">
-              <h3 class="font-serif" style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">📋 Qorshaha Daryeelka Maqaarka</h3>
-              <p style="font-size: 0.9rem; color: var(--text-secondary);">Hel jadwalka subax iyo habeen ee ku habboon maqaarkaaga.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; cursor: pointer;" onclick="navigateTo('ai-skin-advisor')">
-              <h3 class="font-serif" style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">🤖 Lataliyaha Maqaarka AI</h3>
-              <p style="font-size: 0.9rem; color: var(--text-secondary);">Waydii AI wixii ku saabsan finan, dhibco madow, dufan badan ama qallayl, si aad u hesho talooyin iyo daryeel ku habboon.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; cursor: pointer;" onclick="navigateTo('outfit-builder')">
-              <h3 class="font-serif" style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">👗 Naqshadeeyaha Labbiska</h3>
-              <p style="font-size: 0.9rem; color: var(--text-secondary);">Isku-dubarid Dirac, Cabaaya, Jalbaab iyo agab kale si aad u hesho muuqaal qurux badan.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; cursor: pointer;" onclick="navigateTo('color-matcher')">
-              <h3 class="font-serif" style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">🎨 Isku-dheellitirka Midabbada</h3>
-              <p style="font-size: 0.9rem; color: var(--text-secondary);">Baro midabbada si fiican isugu habboon labbiskaaga.</p>
-            </div>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; cursor: pointer;" onclick="navigateTo('skin-tracker')">
-              <h3 class="font-serif" style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">📈 La Socodka Horumarka Maqaarka</h3>
-              <p style="font-size: 0.9rem; color: var(--text-secondary);">Kaydi oo la soco isbeddelka iyo caafimaadka maqaarkaaga waqti ka dib.</p>
-            </div>
+            <button class="btn btn-primary" style="width: 100%; padding: 0.95rem; font-size: 1rem; border-radius: var(--radius-md);" onclick="navigateTo('skin-quiz');">
+              📋 Bilow Imtixaanka (Quiz)
+            </button>
           </div>
+
         </div>
       </div>
 
-      <!-- Featured Categories (Qaybaha Ugu Muhiimsan) -->
-      <div class="section container">
+      <!-- Quick Featured Products -->
+      <div class="section container" style="padding-top: 1rem;">
         <div class="section-header">
-          <span class="section-subtitle">Qaybaha Ugu Muhiimsan</span>
-          <h2 class="section-title">Ka Isoobax Qaybaha</h2>
-          <p class="section-desc">Soo hel daryeel tayo leh iyo labbis Soomaaliyeed oo casri ah.</p>
-        </div>
-        <div class="category-grid">
-          <div class="category-card" onclick="filterShopCategory('daryeelka-maqaarka')">
-            <img src="./images/serum.jpg" alt="Daryeelka Maqaarka">
-            <div class="category-overlay">
-              <h3 class="category-title">🧴 Daryeelka Maqaarka</h3>
-              <span class="category-count">18 Alaabood</span>
-            </div>
-          </div>
-          <div class="category-card" onclick="filterShopCategory('dirac')">
-            <img src="./images/dirac.jpg" alt="Diracyo Soomaaliyeed">
-            <div class="category-overlay">
-              <h3 class="category-title">👗 Diracyo Soomaaliyeed</h3>
-              <span class="category-count">24 Naqshadood</span>
-            </div>
-          </div>
-          <div class="category-card" onclick="filterShopCategory('abayas')">
-            <img src="./images/hero.jpg" alt="Cabaayado">
-            <div class="category-overlay">
-              <h3 class="category-title">🖤 Cabaayado</h3>
-              <span class="category-count">15 Nooc</span>
-            </div>
-          </div>
-          <div class="category-card" onclick="filterShopCategory('hijabs')">
-            <img src="./images/dirac.jpg" alt="Jalbaabyo">
-            <div class="category-overlay">
-              <h3 class="category-title">🧕 Jalbaabyo</h3>
-              <span class="category-count">32 Midab</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- AI Teasers (Awoodda AI) -->
-      <div class="section" style="background: var(--bg-tertiary);">
-        <div class="container">
-          <div class="section-header">
-            <span class="section-subtitle">Awoodda AI</span>
-            <h2 class="section-title">Ka Faa'iidayso AI</h2>
-            <p class="section-desc">Ka faa'iidayso AI si aad u hesho talooyin ku habboon baahidaada.</p>
-          </div>
-          <div class="ai-banner-grid">
-            <div class="ai-card">
-              <div class="ai-icon-bubble"><i class="fa-solid fa-robot"></i></div>
-              <h3 class="font-serif" style="font-size: 1.8rem; margin-bottom: 0.75rem;">🤖 Lataliyaha Maqaarka AI</h3>
-              <p style="color: var(--text-secondary); margin-bottom: 1rem;">Sharax dhibaatada maqaarkaaga sida:</p>
-              <ul style="margin-left: 1.25rem; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
-                <li>Finan</li>
-                <li>Dhibco madow</li>
-                <li>Dufan badan</li>
-                <li>Qallayl</li>
-                <li>Xasaasiyad</li>
-              </ul>
-              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">AI-du waxay kuu diyaarinaysaa talooyin iyo nidaam daryeel oo ku habboon.</p>
-              <button class="btn btn-primary" onclick="navigateTo('ai-skin-advisor')">➡️ Bilow Lataliyaha AI</button>
-            </div>
-            <div class="ai-card">
-              <div class="ai-icon-bubble"><i class="fa-solid fa-shirt"></i></div>
-              <h3 class="font-serif" style="font-size: 1.8rem; margin-bottom: 0.75rem;">👗 Lataliyaha Labbiska AI</h3>
-              <p style="color: var(--text-secondary); margin-bottom: 1rem;">Dooro munaasabadda: Ciid, Aroos, Qalin-jabin, Shaqo, Jaamacad, Maalin kasta.</p>
-              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">AI-du waxay kuu soo jeedinaysaa: Dirac, Cabaaya, Jalbaab, Kabo, Boorso, Agab kale oo isugu habboon.</p>
-              <button class="btn btn-gold" onclick="navigateTo('ai-stylist')">➡️ Bilow Lataliyaha Labbiska</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Best Sellers Grid (Alaabta Ugu Caansan) -->
-      <div class="section container">
-        <div class="section-header">
-          <span class="section-subtitle">Alaabta Ugu Caansan</span>
-          <h2 class="section-title">Alaabta Ugu Iibka Badan</h2>
-          <p class="section-desc">Alaabta ugu iibka badan ee ay macaamiishu aadka u jecel yihiin.</p>
+          <span class="section-subtitle">Dukaanka Bilic</span>
+          <h2 class="section-title">Alaabta Ugu Caansan</h2>
         </div>
         <div class="products-grid" id="home-best-sellers-grid">
           <!-- Rendered via JS -->
         </div>
+      </div>
+
+    </section>
       </div>
     </section>
 
