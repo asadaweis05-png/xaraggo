@@ -226,7 +226,7 @@ async function runGeminiAnalysis(mode, imageBase64, textPrompt) {
 }
 
 // 
-// DISPLAY RESULTS
+// DISPLAY RESULTS (UI/UX OPTIMIZED)
 // 
 function displaySkinAnalysisResults(data, imageBase64) {
   const scores = data.astaamaha || { finan: 0, dufan: 0, qoyaan: 5, xasaasiyad: 0 };
@@ -241,17 +241,19 @@ function displaySkinAnalysisResults(data, imageBase64) {
   };
   const colors = skinTypeColors[data.noocaMaqaarka] || skinTypeColors["Ma cadda"];
 
-  const scoreBar = (icon, label, score, color) => {
+  const scoreBar = (iconClass, label, score, color) => {
     const pct = Math.min(100, (score / 10) * 100);
     const level = score <= 3 ? "Hooseeya" : score <= 6 ? "Dhexdhexaad" : "Sare";
     return `
-      <div style="margin-bottom: 1rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-          <span style="font-size: 0.88rem; font-weight: 600;">${icon} ${label}</span>
-          <span style="font-size: 0.8rem; font-weight: 700; color: ${color};">${score}/10  ${level}</span>
+      <div style="margin-bottom: 1.1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;">
+            <i class="${iconClass}" style="color: ${color}; width: 18px; text-align: center;"></i> ${label}
+          </span>
+          <span style="font-size: 0.82rem; font-weight: 700; color: ${color}; background: ${color}12; padding: 2px 10px; border-radius: 12px;">${score}/10 &bull; ${level}</span>
         </div>
-        <div style="background: var(--bg-tertiary); border-radius: 8px; height: 10px; overflow: hidden;">
-          <div style="width: 0%; background: linear-gradient(90deg, ${color}88, ${color}); height: 100%; border-radius: 8px; transition: width 1.2s ease; width: ${pct}%;"></div>
+        <div style="background: var(--bg-tertiary); border-radius: 10px; height: 12px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);">
+          <div style="width: ${pct}%; background: linear-gradient(90deg, ${color}AA, ${color}); height: 100%; border-radius: 10px; transition: width 1.2s ease;"></div>
         </div>
       </div>
     `;
@@ -262,13 +264,12 @@ function displaySkinAnalysisResults(data, imageBase64) {
     : null;
 
   // Calculate overall skin health score (0-100)
-  // Lower finan/dufan/xasaasiyad = healthier, higher qoyaan = healthier
   const healthScore = Math.round(
     Math.max(0, Math.min(100,
-      ((10 - scores.finan) * 2.5) +   // less acne = better (25 pts max)
-      ((10 - scores.dufan) * 2) +       // less oil = better (20 pts max)  
-      (scores.qoyaan * 3) +             // more hydration = better (30 pts max)
-      ((10 - scores.xasaasiyad) * 2.5)  // less sensitivity = better (25 pts max)
+      ((10 - scores.finan) * 2.5) +   
+      ((10 - scores.dufan) * 2) +       
+      (scores.qoyaan * 3) +             
+      ((10 - scores.xasaasiyad) * 2.5)  
     ))
   );
   const healthColor = healthScore >= 75 ? '#2E7D32' : healthScore >= 50 ? '#FB8C00' : '#E53935';
@@ -277,131 +278,158 @@ function displaySkinAnalysisResults(data, imageBase64) {
   document.getElementById("ai-skin-result").innerHTML = `
     <div style="animation: fadeIn 0.5s ease;">
 
-      <!--  HEADER  -->
-      <div style="background: var(--bg-card); border: 1.5px solid var(--gold-primary); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 1.25rem; box-shadow: var(--shadow-md);">
-        <div style="display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;">
-          ${thumbSrc ? `<img src="${thumbSrc}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold-primary); box-shadow: 0 4px 16px rgba(197,160,89,0.3);">` : `<div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-primary), var(--emerald-dark)); display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-robot" style="font-size: 2rem; color: #FFF;"></i></div>`}
-          <div style="flex: 1;">
-            <div style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold-primary); margin-bottom: 0.4rem;">Natiijooyinka AI - Erav Skin Scan</div>
-            <h3 class="font-serif" style="font-size: 1.7rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">Nooca Maqaarkaaga</h3>
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
-              <span style="background: ${colors.badge}; color: #FFF; padding: 5px 14px; border-radius: 20px; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.02em;">${data.noocaMaqaarka}</span>
-              <span style="background: var(--bg-tertiary); color: var(--text-secondary); padding: 5px 12px; border-radius: 20px; font-size: 0.82rem;">Darajo: ${data.darajo || "Dhexdhexaad"}</span>
+      <!-- MAIN RESULTS HEADER CARD -->
+      <div style="background: linear-gradient(135deg, var(--bg-card) 0%, rgba(197,160,89,0.06) 100%); border: 2px solid var(--gold-primary); border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-md);">
+        <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+          ${thumbSrc ? `<img src="${thumbSrc}" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold-primary); box-shadow: 0 6px 20px rgba(197,160,89,0.35);">` : `<div style="width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-primary), var(--emerald-dark)); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(13,40,24,0.3);"><i class="fa-solid fa-robot" style="font-size: 2.2rem; color: #FFF;"></i></div>`}
+          <div style="flex: 1; min-width: 240px;">
+            <div style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold-primary); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem;">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Natiijooyinka AI - Erav Skin Scan
+            </div>
+            <h3 class="font-serif" style="font-size: 1.85rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">Nooca Maqaarkaaga</h3>
+            <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center;">
+              <span style="background: ${colors.badge}; color: #FFF; padding: 6px 16px; border-radius: 20px; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.02em; box-shadow: 0 2px 8px ${colors.badge}40;">${data.noocaMaqaarka}</span>
+              <span style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 5px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">Darajo: ${data.darajo || "Dhexdhexaad"}</span>
             </div>
           </div>
           <!-- Overall Health Score Circle -->
-          <div style="text-align: center; flex-shrink: 0;">
-            <div style="width: 80px; height: 80px; border-radius: 50%; border: 4px solid ${healthColor}; display: flex; flex-direction: column; align-items: center; justify-content: center; background: ${healthColor}10;">
-              <span style="font-size: 1.6rem; font-weight: 800; color: ${healthColor}; line-height: 1;">${healthScore}</span>
-              <span style="font-size: 0.6rem; font-weight: 600; color: ${healthColor}; text-transform: uppercase;">/100</span>
+          <div style="text-align: center; flex-shrink: 0; background: var(--bg-card); padding: 1rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+            <div style="width: 84px; height: 84px; border-radius: 50%; border: 4px solid ${healthColor}; display: flex; flex-direction: column; align-items: center; justify-content: center; background: ${healthColor}0D; margin: 0 auto;">
+              <span style="font-size: 1.7rem; font-weight: 800; color: ${healthColor}; line-height: 1;">${healthScore}</span>
+              <span style="font-size: 0.62rem; font-weight: 700; color: ${healthColor}; text-transform: uppercase; letter-spacing: 0.05em;">/100</span>
             </div>
-            <span style="font-size: 0.7rem; font-weight: 700; color: ${healthColor}; margin-top: 4px; display: block;">${healthLabel}</span>
+            <span style="font-size: 0.75rem; font-weight: 800; color: ${healthColor}; margin-top: 6px; display: block;">${healthLabel}</span>
           </div>
         </div>
+        ${data.sharaxaad ? `
+          <div style="margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color); font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
+            <i class="fa-solid fa-quote-left" style="color: var(--gold-primary); margin-right: 0.5rem; opacity: 0.7;"></i> ${data.sharaxaad}
+          </div>
+        ` : ''}
       </div>
 
-      <!--  SCORE BARS  -->
-      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.25rem; box-shadow: var(--shadow-sm);">
-        <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--emerald-dark); margin-bottom: 1.25rem;"> Astaamaha Maqaarkaaga</h4>
-        ${scoreBar("", "Finan (Acne)", scores.finan, "#E53935")}
-        ${scoreBar("", "Dufan (Oiliness)", scores.dufan, "#FB8C00")}
-        ${scoreBar("", "Qoyaan (Hydration)", scores.qoyaan, "#1E88E5")}
-        ${scoreBar("", "Xasaasiyad (Sensitivity)", scores.xasaasiyad, "#8E24AA")}
-      </div>
-
-      <!--  ISSUES + INGREDIENTS  -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
-        <div style="background: #fff5f5; border: 1px solid #fca5a5; border-radius: var(--radius-md); padding: 1.25rem;">
-          <h4 style="font-size: 0.9rem; color: #dc2626; margin-bottom: 0.75rem; font-weight: 700;">
-            <i class="fa-solid fa-magnifying-glass"></i> Waxa La Ogaaday
-          </h4>
-          <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.85rem; line-height: 1.9;">
-            ${(data.dhibaatooyinka || ["Wax gaar ah la ogaan waayo"]).map((d) => `<li>${d}</li>`).join("")}
-          </ul>
-        </div>
-        <div style="background: var(--gold-light); border: 1px solid var(--gold-primary); border-radius: var(--radius-md); padding: 1.25rem;">
-          <h4 style="font-size: 0.9rem; color: var(--gold-hover); margin-bottom: 0.75rem; font-weight: 700;">
-            <i class="fa-solid fa-flask"></i> Qanjiyadaha Fiican
-          </h4>
-          <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.82rem; line-height: 1.9;">
-            ${(data.qanjiyadaLaGaliyaa || []).map((q) => `<li><strong>${q.split(" - ")[0]}</strong>${q.includes(" - ") ? "  " + q.split(" - ")[1] : ""}</li>`).join("")}
-          </ul>
-        </div>
-      </div>
-
-      <!--  SOMALI TIPS  -->
-      ${data.talooyinkaSomaalida?.length ? `
-      <div style="background: linear-gradient(135deg, rgba(13,40,24,0.05), rgba(197,160,89,0.08)); border: 1.5px solid var(--emerald-light); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.25rem;">
-        <h4 style="font-size: 1rem; font-weight: 700; color: var(--emerald-dark); margin-bottom: 1rem;">
-           Talooyinka Erav  Ku Saabsan Maqaarkaaga
+      <!-- SCORE BARS CARD -->
+      <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);">
+        <h4 style="font-size: 1rem; font-weight: 700; color: var(--emerald-dark); margin-bottom: 1.35rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-chart-simple" style="color: var(--gold-primary);"></i> Astaamaha & Cabbirrada Maqaarkaaga
         </h4>
-        <div style="display: grid; gap: 0.6rem;">
+        ${scoreBar("fa-solid fa-circle-dot", "Finan (Acne)", scores.finan, "#E53935")}
+        ${scoreBar("fa-solid fa-droplet", "Dufan (Oiliness)", scores.dufan, "#FB8C00")}
+        ${scoreBar("fa-solid fa-water", "Qoyaan (Hydration)", scores.qoyaan, "#1E88E5")}
+        ${scoreBar("fa-solid fa-heart-pulse", "Xasaasiyad (Sensitivity)", scores.xasaasiyad, "#8E24AA")}
+      </div>
+
+      <!-- WIDE CARD 1: ISSUES DETECTED (BAD SIDE / WAXA LA OGAADAY) -->
+      <div style="background: linear-gradient(135deg, #FEF2F2 0%, #FFF5F5 100%); border: 1.5px solid #FCA5A5; border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 1.5rem; box-shadow: 0 4px 16px rgba(220,38,38,0.06);">
+        <h4 style="font-size: 1.1rem; color: #DC2626; margin-bottom: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 0.6rem;">
+          <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.25rem;"></i> Waxa La Ogaaday (Ciladaha & Qaybaha U Baahan Daryeelka)
+        </h4>
+        <div style="display: grid; gap: 0.75rem;">
+          ${(data.dhibaatooyinka || ["Wax gaar ah la ogaan waayo"]).map((d) => `
+            <div style="display: flex; align-items: flex-start; gap: 0.85rem; background: #FFFFFF; border: 1px solid #FEE2E2; padding: 0.9rem 1.15rem; border-radius: var(--radius-md); box-shadow: 0 2px 6px rgba(220,38,38,0.04);">
+              <i class="fa-solid fa-circle-exclamation" style="color: #EF4444; font-size: 1.05rem; margin-top: 2px; flex-shrink: 0;"></i>
+              <span style="font-size: 0.92rem; color: #7F1D1D; font-weight: 600; line-height: 1.5;">${d}</span>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+
+      <!-- WIDE CARD 2: BENEFICIAL INGREDIENTS (GOOD SIDE / QANJIYADAHA FIICAN) -->
+      <div style="background: linear-gradient(135deg, #F0FDF4 0%, #FFFBEB 100%); border: 1.5px solid var(--gold-primary); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 1.5rem; box-shadow: 0 4px 16px rgba(13,40,24,0.06);">
+        <h4 style="font-size: 1.1rem; color: var(--emerald-dark); margin-bottom: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 0.6rem;">
+          <i class="fa-solid fa-vial-circle-check" style="font-size: 1.25rem; color: var(--gold-primary);"></i> Qanjiyadaha & Maaddooyinka Fiican ee Maqaarkaaga
+        </h4>
+        <div style="display: grid; gap: 0.85rem;">
+          ${(data.qanjiyadaLaGaliyaa || []).map((q) => {
+            const name = q.split(" - ")[0];
+            const desc = q.includes(" - ") ? q.split(" - ")[1] : "";
+            return `
+              <div style="background: #FFFFFF; border: 1px solid rgba(197,160,89,0.35); padding: 1rem 1.25rem; border-radius: var(--radius-md); box-shadow: 0 2px 8px rgba(13,40,24,0.04);">
+                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; flex-wrap: wrap;">
+                  <span style="background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); color: #121212; padding: 4px 12px; border-radius: 14px; font-size: 0.85rem; font-weight: 800; display: inline-flex; align-items: center; gap: 0.4rem; box-shadow: 0 2px 6px rgba(197,160,89,0.25);">
+                    <i class="fa-solid fa-check" style="font-size: 0.75rem;"></i> ${name}
+                  </span>
+                </div>
+                ${desc ? `<p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0; line-height: 1.6; font-weight: 500;">${desc}</p>` : ''}
+              </div>
+            `;
+          }).join("")}
+        </div>
+      </div>
+
+      <!-- SOMALI TIPS CARD -->
+      ${data.talooyinkaSomaalida?.length ? `
+      <div style="background: linear-gradient(135deg, rgba(13,40,24,0.05) 0%, rgba(197,160,89,0.1) 100%); border: 1.5px solid var(--emerald-light); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 1.5rem;">
+        <h4 style="font-size: 1.1rem; font-weight: 700; color: var(--emerald-dark); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem;">
+          <i class="fa-solid fa-lightbulb" style="color: var(--gold-primary);"></i> Talooyinka Erav Ku Saabsan Maqaarkaaga
+        </h4>
+        <div style="display: grid; gap: 0.75rem;">
           ${data.talooyinkaSomaalida.map((t, i) => `
-            <div style="display: flex; gap: 0.75rem; align-items: flex-start; background: rgba(255,255,255,0.6); padding: 0.75rem; border-radius: var(--radius-sm);">
-              <span style="background: var(--emerald-dark); color: #FAF0CA; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0;">${i + 1}</span>
-              <span style="font-size: 0.88rem; line-height: 1.6;">${t}</span>
+            <div style="display: flex; gap: 0.85rem; align-items: flex-start; background: #FFFFFF; padding: 0.9rem 1.15rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+              <span style="background: var(--emerald-dark); color: #FAF0CA; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; flex-shrink: 0; margin-top: 1px;">${i + 1}</span>
+              <span style="font-size: 0.92rem; line-height: 1.6; color: var(--text-primary); font-weight: 500;">${t}</span>
             </div>
           `).join("")}
         </div>
       </div>
       ` : ""}
 
-      <!--  CREAMS TO LOOK FOR  -->
+      <!-- CREAMS TO LOOK FOR -->
       ${data.kiriimadaLaGaliyaa?.length ? `
-      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;">
-        <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--emerald-dark); margin-bottom: 0.75rem;">
-           Kiriimadaha iyo Alaabta La Doorbidi Lahaa
+      <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);">
+        <h4 style="font-size: 1rem; font-weight: 700; color: var(--emerald-dark); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-pump-soap" style="color: var(--gold-primary);"></i> Kiriimadaha & Alaabta La Doorbidi Lahaa
         </h4>
-        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-          ${data.kiriimadaLaGaliyaa.map((k) => `<span style="background: var(--bg-tertiary); border: 1px solid var(--border-color); padding: 5px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 500;">${k}</span>`).join("")}
+        <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
+          ${data.kiriimadaLaGaliyaa.map((k) => `<span style="background: var(--gold-light); border: 1px solid var(--gold-primary); color: var(--emerald-dark); padding: 7px 16px; border-radius: 20px; font-size: 0.88rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem;"><i class="fa-solid fa-check" style="font-size: 0.75rem; color: var(--gold-primary);"></i> ${k}</span>`).join("")}
         </div>
       </div>
       ` : ""}
 
-      <!--  ROUTINES  -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
-        <div style="background: linear-gradient(180deg, #FFFBEB, var(--bg-card)); border: 1px solid #FDE68A; border-radius: var(--radius-md); padding: 1.25rem;">
-          <h4 style="font-size: 0.9rem; margin-bottom: 1rem; font-weight: 700; color: #92400E;">
-            <i class="fa-solid fa-sun" style="color: #F59E0B;"></i> Jadwalka Subaxda
+      <!-- ROUTINES (SUBAXDA & HABEENKA) -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
+        <div style="background: linear-gradient(180deg, #FFFBEB 0%, var(--bg-card) 100%); border: 1.5px solid #FDE68A; border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);">
+          <h4 style="font-size: 1.05rem; margin-bottom: 1.15rem; font-weight: 700; color: #92400E; display: flex; align-items: center; gap: 0.6rem;">
+            <i class="fa-solid fa-sun" style="color: #F59E0B; font-size: 1.2rem;"></i> Jadwalka Subaxda
           </h4>
-          <ol style="margin: 0; padding-left: 1.1rem; font-size: 0.83rem; line-height: 2;">
+          <ol style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem; line-height: 2.1; color: var(--text-primary); font-weight: 500;">
             ${(data.jadwalkaSubaxda || []).map((s) => `<li>${s}</li>`).join("")}
           </ol>
         </div>
-        <div style="background: linear-gradient(180deg, #EDE9FE, var(--bg-card)); border: 1px solid #C4B5FD; border-radius: var(--radius-md); padding: 1.25rem;">
-          <h4 style="font-size: 0.9rem; margin-bottom: 1rem; font-weight: 700; color: #4C1D95;">
-            <i class="fa-solid fa-moon" style="color: #7C3AED;"></i> Jadwalka Habeenka
+        <div style="background: linear-gradient(180deg, #EDE9FE 0%, var(--bg-card) 100%); border: 1.5px solid #C4B5FD; border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);">
+          <h4 style="font-size: 1.05rem; margin-bottom: 1.15rem; font-weight: 700; color: #4C1D95; display: flex; align-items: center; gap: 0.6rem;">
+            <i class="fa-solid fa-moon" style="color: #7C3AED; font-size: 1.2rem;"></i> Jadwalka Habeenka
           </h4>
-          <ol style="margin: 0; padding-left: 1.1rem; font-size: 0.83rem; line-height: 2;">
+          <ol style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem; line-height: 2.1; color: var(--text-primary); font-weight: 500;">
             ${(data.jadwalkaHabeenka || []).map((s) => `<li>${s}</li>`).join("")}
           </ol>
         </div>
       </div>
 
-      <!--  PRODUCT RECOMMENDATIONS (Placeholder)  -->
-      <div style="background: linear-gradient(135deg, var(--emerald-dark), #1E5B3A); padding: 1.5rem; border-radius: var(--radius-lg); color: #FAF8F5; margin-bottom: 1rem; display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;">
-        <div style="flex: 1;">
-          <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold-primary); margin-bottom: 0.4rem; font-weight: 700;">Alaabta Erav</div>
-          <h4 style="font-size: 1.1rem; margin-bottom: 0.4rem; font-family: var(--font-serif);">
+      <!-- PRODUCT RECOMMENDATIONS BANNER -->
+      <div style="background: linear-gradient(135deg, var(--emerald-dark) 0%, #1E5B3A 100%); padding: 1.75rem; border-radius: var(--radius-lg); color: #FAF8F5; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; box-shadow: var(--shadow-md);">
+        <div style="flex: 1; min-width: 250px;">
+          <div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold-primary); margin-bottom: 0.4rem; font-weight: 800;">Alaabta Erav</div>
+          <h4 style="font-size: 1.25rem; margin-bottom: 0.4rem; font-family: var(--font-serif);">
             <i class="fa-solid fa-bag-shopping" style="color: var(--gold-primary);"></i> Alaabta Kuu Habboon
           </h4>
-          <p style="font-size: 0.85rem; opacity: 0.85; margin: 0;">AI-du waxay u doortay alaab ku habboon <strong>${data.noocaMaqaarka}</strong>. Dukaankayaga ka fiiri alaabta ugu habboon maqaarkaaga.</p>
+          <p style="font-size: 0.9rem; opacity: 0.9; margin: 0; line-height: 1.6;">AI-du waxay u doortay alaab ku habboon <strong>${data.noocaMaqaarka}</strong>. Dukaankayaga ka fiiri alaabta ugu habboon maqaarkaaga.</p>
         </div>
-        <button class="btn btn-gold" onclick="filterShopCategory('daryeelka-maqaarka'); navigateTo('shop');" style="white-space: nowrap;">
-           Eeg Dukaanka
+        <button class="btn btn-gold" onclick="filterShopCategory('daryeelka-maqaarka'); navigateTo('shop');" style="white-space: nowrap; font-size: 0.95rem; padding: 0.85rem 1.5rem;">
+          <i class="fa-solid fa-store"></i> Eeg Dukaanka
         </button>
       </div>
 
-      <!--  DISCLAIMER  -->
-      <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; padding-top: 1rem; border-top: 1px dashed var(--border-color); line-height: 1.6;">
+      <!-- DISCLAIMER -->
+      <p style="font-size: 0.82rem; color: var(--text-muted); text-align: center; padding-top: 1rem; border-top: 1px dashed var(--border-color); line-height: 1.6;">
         <i class="fa-solid fa-shield-halved" style="color: var(--gold-primary);"></i>
         <strong>Ogeysiis:</strong> ${data.faallo || "Talooyinkan waxaa loogu talagalay macluumaadka guud oo keliya."} Ma aha talo dhakhtar rasmi ah.
       </p>
 
       <!-- Retake button -->
-      <div style="text-align: center; margin-top: 1.5rem;">
-        <button class="btn btn-outline" onclick="document.getElementById('ai-skin-result').style.display='none'; switchScanTab('camera');">
-          <i class="fa-solid fa-rotate-left"></i> Dib u Baro
+      <div style="text-align: center; margin-top: 1.75rem;">
+        <button class="btn btn-outline" onclick="document.getElementById('ai-skin-result').style.display='none'; switchScanTab('camera');" style="padding: 0.85rem 1.75rem;">
+          <i class="fa-solid fa-rotate-left"></i> Dib u Baro Sawirka
         </button>
       </div>
     </div>
