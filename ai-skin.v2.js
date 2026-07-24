@@ -160,13 +160,54 @@ async function runGeminiAnalysis(mode, imageBase64, textPrompt) {
       responseData = data;
     } catch (fetchErr) {
       console.warn("AI Backend unreachable, using fallback mock data. Error:", fetchErr);
-      // Fallback mock response for demonstration
+      // Comprehensive fallback mock response for demonstration
       responseData = {
-        noocaMaqaarka: "Isku Dhafan (Dufan & Qallayl)",
-        astaamaha: { finan: 30, dufan: 65, qoyaan: 45, xasaasiyad: 20 },
-        sharaxaad: "Falanqayntan waa mid tusaale ah maadaama uu xiriirka intarnetka ama serverka mashquul yahay. Maqaarkaagu wuxuu u muuqdaa mid isku dhafan. Waxaan kugula talinaynaa inaad isticmaasho Niacinamide si aad u dheellitirto dufanka.",
-        ciladaha: ["Daloolo muuqda", "Dufan wejiga T-zone-ka ah"],
-        talooyinka: ["Isticmaal nadiifiye Salicylic Acid", "Isticmaal Serum Niacinamide"],
+        noocaMaqaarka: "Isku Dhafan",
+        darajo: "Dhexdhexaad-Sare",
+        astaamaha: { finan: 3, dufan: 6, qoyaan: 5, xasaasiyad: 2 },
+        sharaxaad: "Maqaarkaagu wuxuu u muuqdaa mid isku dhafan ah. Dhanka T-zone-ka (wejiga, sanka, gadaashka) waxaa jira dufan dheeraad ah, halka dhabannada iyo wejigoodu ay qallayl yihiin. Tani waa nooca ugu badan ee maqaarka Soomaalida. Waxaan kugula talinaynaa inaad isticmaasho alaab dheellitirta dufanka iyadoo aan qallajin qaybaha kale.",
+        dhibaatooyinka: [
+          "Dufan badan oo ku yaal T-zone-ka (wejiga, sanka, gadaashka)",
+          "Daloolo yaryar oo muuqda oo ku yaal dhinacyada sanka",
+          "Dhibco madow oo yaryar oo ka muuqda dhabannada",
+          "Qallajin yar oo ku taal aagga indhaha",
+          "Maqaarka midabkiisu siman yahay waayo waa caadi"
+        ],
+        qanjiyadaLaGaliyaa: [
+          "Niacinamide 10% - Wuxuu yarayaa daloolada, dheellitiraa dufanka, wuxuuna tirtiraa dhibcaha madow",
+          "Hyaluronic Acid - Wuxuu qoyaaniyaa maqaarka qallayl ee dhabannada iyadoon dufan ku darin",
+          "Salicylic Acid 2% - Wuxuu nadiifiyaa daloolada xirantay wuxuuna ka hortagaa finannada",
+          "Vitamin C 15% - Wuxuu dhalaaliyaa maqaarka wuxuuna tirtiraa dhibcaha madow",
+          "Zinc PCA - Wuxuu xakamaynayaa dufanka badan ee T-zone-ka"
+        ],
+        talooyinkaSomaalida: [
+          "Subaxdii iyo habeenkii labadaba ku dhaq wejigaaga, si aad u tirtirto dufanka iyo wasakhda.",
+          "Sunscreen SPF 50 maalin kasta isticmaal, xitaa maalinta daruurtay. Maqaarka madow dhibcaha madow ayuu u nugul yahay qorraxda.",
+          "Isticmaal Niacinamide habeenkii si aad u dheellitirto dufanka iyo dhibcaha madow.",
+          "Ha isticmaalin alaab badan oo isu mid ah mar keliya. Hal alaab cusub bishii ku dar.",
+          "Biyo badan cab (ilaa 2-3 liitir maalintii) si aad u qoyaaniso maqaarkaaga gudihiisa."
+        ],
+        jadwalkaSubaxda: [
+          "Nadiifiye dabacsan (Gentle Cleanser)",
+          "Serum Vitamin C 15%",
+          "Kiriim fudud oo qoyaan leh (Gel Moisturizer)",
+          "Sunscreen SPF 50+ (muhiim!)"
+        ],
+        jadwalkaHabeenka: [
+          "Nadiifiye Salicylic Acid 2%",
+          "Serum Niacinamide 10%",
+          "Kiriim Hyaluronic Acid",
+          "Indhaha: Kiriimka Retinol ee indhaha"
+        ],
+        kiriimadaLaGaliyaa: [
+          "Serum Niacinamide 10%",
+          "Sunscreen SPF 50",
+          "Gel Moisturizer",
+          "Salicylic Acid Cleanser",
+          "Vitamin C Serum",
+          "Retinol Eye Cream"
+        ],
+        faallo: "Falanqayntan waxay ku saleysan tahay sawirka la soo dhigay. Si natiijooyin sax ah loo helo, waxaan kugula talinaynaa inaad la tashato dhakhtar maqaar (dermatologist).",
         alaabta: ["p1", "p3"]
       };
     }
@@ -220,6 +261,19 @@ function displaySkinAnalysisResults(data, imageBase64) {
     ? `data:image/jpeg;base64,${imageBase64}`
     : null;
 
+  // Calculate overall skin health score (0-100)
+  // Lower finan/dufan/xasaasiyad = healthier, higher qoyaan = healthier
+  const healthScore = Math.round(
+    Math.max(0, Math.min(100,
+      ((10 - scores.finan) * 2.5) +   // less acne = better (25 pts max)
+      ((10 - scores.dufan) * 2) +       // less oil = better (20 pts max)  
+      (scores.qoyaan * 3) +             // more hydration = better (30 pts max)
+      ((10 - scores.xasaasiyad) * 2.5)  // less sensitivity = better (25 pts max)
+    ))
+  );
+  const healthColor = healthScore >= 75 ? '#2E7D32' : healthScore >= 50 ? '#FB8C00' : '#E53935';
+  const healthLabel = healthScore >= 75 ? 'Wanaagsan' : healthScore >= 50 ? 'Dhexdhexaad' : 'U Baahan Daryeel';
+
   document.getElementById("ai-skin-result").innerHTML = `
     <div style="animation: fadeIn 0.5s ease;">
 
@@ -228,12 +282,20 @@ function displaySkinAnalysisResults(data, imageBase64) {
         <div style="display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;">
           ${thumbSrc ? `<img src="${thumbSrc}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold-primary); box-shadow: 0 4px 16px rgba(197,160,89,0.3);">` : `<div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-primary), var(--emerald-dark)); display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-robot" style="font-size: 2rem; color: #FFF;"></i></div>`}
           <div style="flex: 1;">
-            <div style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold-primary); margin-bottom: 0.4rem;">Natiijooyinka AI  Erav Skin Scan</div>
+            <div style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold-primary); margin-bottom: 0.4rem;">Natiijooyinka AI - Erav Skin Scan</div>
             <h3 class="font-serif" style="font-size: 1.7rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">Nooca Maqaarkaaga</h3>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
               <span style="background: ${colors.badge}; color: #FFF; padding: 5px 14px; border-radius: 20px; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.02em;">${data.noocaMaqaarka}</span>
               <span style="background: var(--bg-tertiary); color: var(--text-secondary); padding: 5px 12px; border-radius: 20px; font-size: 0.82rem;">Darajo: ${data.darajo || "Dhexdhexaad"}</span>
             </div>
+          </div>
+          <!-- Overall Health Score Circle -->
+          <div style="text-align: center; flex-shrink: 0;">
+            <div style="width: 80px; height: 80px; border-radius: 50%; border: 4px solid ${healthColor}; display: flex; flex-direction: column; align-items: center; justify-content: center; background: ${healthColor}10;">
+              <span style="font-size: 1.6rem; font-weight: 800; color: ${healthColor}; line-height: 1;">${healthScore}</span>
+              <span style="font-size: 0.6rem; font-weight: 600; color: ${healthColor}; text-transform: uppercase;">/100</span>
+            </div>
+            <span style="font-size: 0.7rem; font-weight: 700; color: ${healthColor}; margin-top: 4px; display: block;">${healthLabel}</span>
           </div>
         </div>
       </div>
