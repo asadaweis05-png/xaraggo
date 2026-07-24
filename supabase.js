@@ -691,8 +691,10 @@ async function initSupabaseApp() {
 
 // Auto-init when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  // Add authUser to state
-  if (!state.authUser) state.authUser = null;
+  // Ensure state exists safely
+  if (typeof state !== 'undefined') {
+    if (!state.authUser) state.authUser = null;
+  }
 
   // Initialize Supabase after a short delay to let SDK load
   setTimeout(initSupabaseApp, 500);
