@@ -268,40 +268,90 @@
       </div>
     </section>
 
-    <!-- AI SKIN ADVISOR VIEW -->
+    <!-- AI SKIN ADVISOR VIEW (Real Camera Face Scan + Gemini Vision) -->
     <section id="view-ai-skin-advisor" class="app-view" style="display: none;">
       <div class="section container">
         <div class="section-header">
-          <span class="section-subtitle">Lataliyaha Maqaarka AI</span>
-          <h2 class="section-title">Waydii AI-da Maqaarkaaga</h2>
-          <p class="section-desc">Waydii AI wixii ku saabsan finan, dhibco madow, dufan badan ama qallayl, si aad u hesho talooyin iyo daryeel ku habboon.</p>
+          <span class="section-subtitle">Baadhista AI-da ee Maqaarka</span>
+          <h2 class="section-title">Baar & Falanqee Maqaarkaaga (Gemini AI Vision)</h2>
+          <p class="section-desc">Sawir wejigaaga ama sharax dhibaatada si AI-du ay si sax ah kuugu falanqeyso maqaarkaaga, kuuna siiso talooyin, jadwalka daryeelka, iyo kiriimada ku habboon.</p>
         </div>
 
-        <div style="max-width: 800px; margin: 0 auto; background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-md);">
-          <div style="background: var(--gold-light); border: 1px solid var(--gold-primary); padding: 1rem; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-primary); margin-bottom: 1.5rem; display: flex; gap: 0.75rem; align-items: flex-start;">
-            <i class="fa-solid fa-triangle-exclamation" style="color: var(--gold-primary); font-size: 1.2rem; margin-top: 2px;"></i>
-            <span><strong>Ogeysiis Caafimaad:</strong> Lataliyaha AI-da ee Bilic wuxuu bixiyaa talooyin daryeel oo aqooneed. Ma aha talo dhakhtar rasmi ah.</span>
+        <div style="max-width: 820px; margin: 0 auto; background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-md);">
+          
+          <!-- Mode Tabs -->
+          <div style="display: flex; gap: 0.5rem; border-bottom: 2px solid var(--border-color); margin-bottom: 1.75rem;">
+            <button class="scan-tab-btn active" data-scan-tab="camera" onclick="switchScanTab('camera')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-primary); border-bottom: 3px solid var(--gold-primary); transition: all 0.3s ease;">
+              📸 Sawirka Wejiga (AI Scanner)
+            </button>
+            <button class="scan-tab-btn" data-scan-tab="text" onclick="switchScanTab('text')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-muted); border-bottom: 3px solid transparent; transition: all 0.3s ease;">
+              ✍️ Sharaxaad Qoraal ah
+            </button>
           </div>
 
-          <div style="margin-bottom: 1.5rem;">
-            <label style="font-weight: 600; display: block; margin-bottom: 0.5rem;">Sharax dhibaatada maqaarkaaga (Finan, Dhibco madow, Dufan badan, Qallayl, Xasaasiyad):</label>
-            <textarea id="ai-skin-prompt" rows="4" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); outline: none;" placeholder="Sharax dhibaatada maqaarkaaga si aad u hesho talooyin iyo nidaam daryeel oo ku habboon..."></textarea>
-          </div>
-
-          <div style="margin-bottom: 2rem;">
-            <div style="border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; text-align: center; background: var(--bg-tertiary); cursor: pointer;" onclick="simulatePhotoUpload()">
-              <i class="fa-solid fa-camera" style="font-size: 2rem; color: var(--gold-primary); margin-bottom: 0.5rem;"></i>
-              <p style="font-size: 0.9rem; color: var(--text-secondary);" id="photo-upload-status">Riix si aad u baarto sawirka maqaarkaaga (AI Scanner)</p>
+          <!-- TAB 1: CAMERA SCANNER -->
+          <div id="scan-tab-camera" class="scan-tab-content" style="display: block;">
+            
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+              <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                Kamaradda shid, wejigaaga ku aad xarriiqda oval-ka ah, ka dibna riix <strong>"Sawir oo Falanqee"</strong>.
+              </p>
+              
+              <!-- Start Camera Button (if stopped) -->
+              <button id="btn-start-camera" class="btn btn-gold" onclick="startSkinCamera()" style="font-size: 1rem; padding: 0.85rem 1.75rem;">
+                <i class="fa-solid fa-camera"></i> Shid Kamaradda Wejiga
+              </button>
             </div>
+
+            <!-- Video Feed Container with Face Oval Guide -->
+            <div id="camera-container" style="display: none; position: relative; width: 100%; max-width: 460px; height: 380px; margin: 0 auto 1.5rem; border-radius: var(--radius-lg); overflow: hidden; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 2px solid var(--gold-primary);">
+              <video id="skin-camera-feed" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1);"></video>
+              
+              <!-- Face Oval Guide Overlay -->
+              <div class="face-oval-guide" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 210px; height: 270px; border: 2px dashed var(--gold-primary); border-radius: 50%; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45); pointer-events: none;">
+                <span style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); font-size: 0.75rem; color: var(--gold-primary); text-transform: uppercase; font-weight: 700; white-space: nowrap; background: rgba(0,0,0,0.7); padding: 3px 10px; border-radius: 12px;">Wejiga Halkan Ku Aad</span>
+              </div>
+
+              <!-- Animated Scan Line -->
+              <div class="scan-line-anim" style="display: none; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--gold-primary), #FFF, var(--gold-primary), transparent); box-shadow: 0 0 15px var(--gold-primary); animation: scanAnimation 2.2s infinite ease-in-out;"></div>
+            </div>
+
+            <canvas id="skin-capture-canvas" style="display: none;"></canvas>
+
+            <p id="camera-hint" style="display: none; text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+              <i class="fa-solid fa-lightbulb" style="color: var(--gold-primary);"></i> Talo: Hubi inay jirto ileys ku filan oo wejigaagu si cad u muuqdo.
+            </p>
+
+            <!-- Camera Actions -->
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+              <button id="btn-capture" class="btn btn-gold" onclick="captureAndAnalyze()" style="display: none; font-size: 1rem; padding: 0.85rem 1.75rem;">
+                ✨ Sawir oo Falanqee (AI Vision)
+              </button>
+              <button id="btn-stop-camera" class="btn btn-outline" onclick="stopSkinCamera()" style="display: none;">
+                <i class="fa-solid fa-xmark"></i> Dambay
+              </button>
+            </div>
+
           </div>
 
-          <button class="btn btn-gold" style="width: 100%;" onclick="runAISkinAnalysis()">
-            ➡️ Bilow Lataliyaha AI
-          </button>
+          <!-- TAB 2: TEXT PROMPT BACKUP -->
+          <div id="scan-tab-text" class="scan-tab-content" style="display: none;">
+            <div style="margin-bottom: 1.5rem;">
+              <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">
+                Sharax dhibaatada maqaarkaaga (Finan, Dhibco madow, Dufan badan, Qallayl, Xasaasiyad):
+              </label>
+              <textarea id="ai-skin-prompt" rows="4" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); outline: none; box-sizing: border-box;" placeholder="Tusaale: Waxaan leeyahay finan badan oo ku yaal dhabannada, dufan badan sanka, iyo dhibco madow ka dhashey finankii hore..."></textarea>
+            </div>
+            <button class="btn btn-gold" style="width: 100%; padding: 0.9rem;" onclick="runAISkinAnalysisText()">
+              ➡️ Falanqee Sharaxaadda (Gemini AI)
+            </button>
+          </div>
 
+          <!-- RESULT CONTAINER -->
           <div id="ai-skin-result" style="display: none; margin-top: 2rem; padding-top: 2rem; border-top: 1px dashed var(--border-color);">
-            <!-- Rendered via JS -->
+            <!-- Dynamic Gemini Analysis Results rendered here via ai-skin.js -->
           </div>
+
         </div>
       </div>
     </section>
@@ -610,6 +660,7 @@
   </footer>
 
   <script src="supabase.js"></script>
+  <script src="ai-skin.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

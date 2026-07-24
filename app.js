@@ -558,15 +558,59 @@ function handleGlobalSearch(query) {
   `).join('');
 }
 
-// QUIZ WIZARD
+// QUIZ WIZARD (6 Detailed Somali Skin Questions)
 const quizQuestions = [
   {
-    q: 'Sidee maqaarku dareemaa 30 daqiiqo ka dib marka aad wejiga dhaqato?',
-    options: ['Qallayl oo giagsan', 'Dufan badan ayaa ka socota', 'Dufan T-zone oo keliya', 'Iska caadi ah oo deggan', 'Xasaasiyad ama diiraya']
+    q: "1. Sidee maqaarku dareemaa 30–60 daqiiqo ka dib marka aad wejiga dhaqato?",
+    options: [
+      "Qallayl oo giagsan (Maqaarka Qallalan)",
+      "Dufan badan oo dhalaalaya (Maqaarka Dufanka Leh)",
+      "Dufan sanka/waji-sare oo keliya (Maqaar Isku Dhafan)",
+      "Iska caadi ah oo dabacsan (Maqaar Caadi Ah)",
+      "Redness ama gubasho yar (Maqaar Xasaasi Ah)"
+    ]
   },
   {
-    q: 'Waa maxay meesha ugu horeysa ee aad rabto inaad daryeesho?',
-    options: ['Tirtirida dhibco madow', 'Yaraynta finanka', 'Dhowrida qoyanaanta maqaarka', 'Yaraynta daloolada wejiga']
+    q: "2. Finan ama xabado intee jeer ayay wejigaaga ka soo baxaan?",
+    options: [
+      "Maalin kasta ama usbuuc walba (Finan Firfircoon)",
+      "Xilliga caadada ama stress-ka oo keliya",
+      "Marnaba ama aad u yar",
+      "Marka aan isticmaalo alaab cusub (Xasaasiyad)"
+    ]
+  },
+  {
+    q: "3. Dhibco madow ama hyperpigmentation ma leedahay ka dib finanka?",
+    options: [
+      "Haa, dhibco madow oo badan oo aan jalafsanayn",
+      "Haa, meelo yar yar oo madow",
+      "Maya, maqaarkaygu mar walba waa siman yahay"
+    ]
+  },
+  {
+    q: "4. Daloolada (pores) wejigaaga sidee u muuqdaan?",
+    options: [
+      "Waa waweyn yihiin oo sanka & dhabannada ka muuqdaan",
+      "Dhexdhexaad meelaha T-zone",
+      "Aad u yar oo aan haba yaraatee muuqan"
+    ]
+  },
+  {
+    q: "5. Qorraxda markaad gasho sidee maqaarkaagu u reageeyaa?",
+    options: [
+      "Waa madoobaadaa oo dhibco madow soo baxaan (Hyperpigmentation)",
+      "Waa diiraa oo casaadaa (Xasaasiyad Qorrax)",
+      "Waxba kama beddelmo ama dufan ayaa ka soo baxa"
+    ]
+  },
+  {
+    q: "6. Waa maxay meesha ugu horeysa ee aad rabto inaad daryeesho?",
+    options: [
+      "Tirtirida dhibco madow & dhalaalinta maqaarka",
+      "Yaraynta finanka & dufanka badan",
+      "Dhowrida qoyanaanta & caafimaadka maqaarka",
+      "Dawaynta xasaasiyadda & casaanka"
+    ]
   }
 ];
 
@@ -579,50 +623,118 @@ function initQuizWizard() {
   renderQuizStep();
 }
 
+function evaluateQuizResults(answers) {
+  const ansStr = answers.join(' ').toLowerCase();
+  
+  let skinType = 'Maqaar Isku Dhafan';
+  let primaryConcern = 'Dhibco Madow & Dhalaalka';
+  let recommendedActive = 'Niacinamide 10% & Sunscreen SPF 50';
+  let cleanser = 'Gel Cleanser Jilicsan';
+  let moisturizer = 'Oil-Free Gel Moisturizer';
+
+  if (ansStr.includes('dufanka leh') || ansStr.includes('dufan badan') || ansStr.includes('yaraynta finanka')) {
+    skinType = 'Maqaar Dufanka Leh';
+    primaryConcern = 'Finan & Dufan Badan';
+    recommendedActive = 'Salicylic Acid 2% + Niacinamide 10%';
+    cleanser = 'Salicylic Acid Foam Cleanser';
+    moisturizer = 'Lightweight Oil-Free Gel';
+  } else if (ansStr.includes('qallalan') || ansStr.includes('qallayl')) {
+    skinType = 'Maqaar Qallalan';
+    primaryConcern = 'Biyo La’aanta Maqaarka & Giagsanaanta';
+    recommendedActive = 'Hyaluronic Acid + Ceramides';
+    cleanser = 'Hydrating Cream Cleanser';
+    moisturizer = 'Rich Barrier Cream';
+  } else if (ansStr.includes('xasaasi') || ansStr.includes('casaanka') || ansStr.includes('diiraa')) {
+    skinType = 'Maqaar Xasaasi Ah';
+    primaryConcern = 'Casaan, Gubasho & Xasaasiyad';
+    recommendedActive = 'Centella Asiatica + Azelaic Acid';
+    cleanser = 'Ultra-Gentle Micellar / Gel Cleanser';
+    moisturizer = 'Soothing Sope Cream';
+  }
+
+  return { skinType, primaryConcern, recommendedActive, cleanser, moisturizer };
+}
+
 function renderQuizStep() {
   const container = document.getElementById('quiz-step-content');
   const fill = document.getElementById('quiz-progress');
   
+  if (!container) return;
+
   if (quizStep >= quizQuestions.length) {
-    fill.style.width = '100%';
+    if (fill) fill.style.width = '100%';
+
+    const res = evaluateQuizResults(quizAnswers);
+
+    // Save result to state & Supabase
+    state.user.skinType = res.skinType;
+    if (state.authUser && typeof updateUserProfile === 'function') {
+      updateUserProfile({ skin_type: res.skinType });
+    }
+
     container.innerHTML = `
-      <div style="text-align: center; padding: 1rem;">
-        <i class="fa-solid fa-circle-check" style="font-size: 3.5rem; color: var(--gold-primary); margin-bottom: 1rem;"></i>
-        <h3 class="font-serif" style="font-size: 2rem; margin-bottom: 0.5rem;">Qorshaha Daryeelka Maqaarkaaga</h3>
-        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Hel jadwalka subax iyo habeen ee ku habboon maqaarkaaga.</p>
+      <div style="text-align: center; padding: 1.5rem 0; animation: fadeIn 0.4s ease;">
+        <div style="width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-primary), var(--emerald-dark)); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem;">
+          <i class="fa-solid fa-circle-check" style="font-size: 2.2rem; color: #FFF;"></i>
+        </div>
+        <span style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold-primary);">Imtixaanka Waa La Dhaameeyay</span>
+        <h3 class="font-serif" style="font-size: 2rem; margin: 0.3rem 0 0.5rem; color: var(--emerald-dark);">Natiijada Maqaarkaaga</h3>
         
-        <div style="background: var(--bg-tertiary); padding: 1.5rem; border-radius: var(--radius-md); text-align: left; margin-bottom: 2rem;">
-          <h4 style="color: var(--emerald-dark); margin-bottom: 0.5rem;"><i class="fa-solid fa-sun"></i> Jadwalka Subaxda:</h4>
-          <ol style="margin-left: 1.25rem; font-size: 0.9rem; margin-bottom: 1rem;">
-            <li>Dhaqaha Dabacsan ee Wejiga</li>
-            <li>Serum Niacinamide 10%</li>
-            <li>Kiriimka Gel-ka ah ee Qoyanta</li>
-            <li>Sunscreen SPF 50</li>
+        <div style="background: var(--gold-light); border: 1.5px solid var(--gold-primary); border-radius: var(--radius-md); padding: 1rem 1.5rem; display: inline-block; margin-bottom: 2rem;">
+          <strong style="font-size: 1.2rem; color: var(--emerald-dark); display: block;">Nooca Maqaarka: ${res.skinType}</strong>
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">Focus: ${res.primaryConcern}</span>
+        </div>
+
+        <div style="background: var(--bg-tertiary); padding: 1.75rem; border-radius: var(--radius-lg); text-align: left; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+          <h4 style="color: var(--emerald-dark); margin-bottom: 1rem; font-size: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+            <i class="fa-solid fa-sun" style="color: var(--gold-primary);"></i> Jadwalka Subaxda (Morning Routine):
+          </h4>
+          <ol style="margin-left: 1.25rem; font-size: 0.9rem; line-height: 1.8; margin-bottom: 1.5rem;">
+            <li><strong>Dhaqaha:</strong> ${res.cleanser}</li>
+            <li><strong>Serum-ka:</strong> ${res.recommendedActive}</li>
+            <li><strong>Qoyanta:</strong> ${res.moisturizer}</li>
+            <li><strong>Sunscreen:</strong> Broad Spectrum SPF 50+ (Sidoo kale maqaarka madow wuxuu u baahan yahay SPF!)</li>
           </ol>
-          <h4 style="color: var(--emerald-dark); margin-bottom: 0.5rem;"><i class="fa-solid fa-moon"></i> Jadwalka Habeenka:</h4>
-          <ol style="margin-left: 1.25rem; font-size: 0.9rem;">
-            <li>Dhaqida Labada Jeer</li>
-            <li>Dawaynta Azelaic Acid</li>
-            <li>Kiriimka Ceramides</li>
+
+          <h4 style="color: var(--emerald-dark); margin-bottom: 1rem; font-size: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+            <i class="fa-solid fa-moon" style="color: #7C3AED;"></i> Jadwalka Habeenka (Evening Routine):
+          </h4>
+          <ol style="margin-left: 1.25rem; font-size: 0.9rem; line-height: 1.8;">
+            <li><strong>Cleanser-ka 1-aad:</strong> Micellar Water (ka saar boodhka & qurxinta)</li>
+            <li><strong>Cleanser-ka 2-aad:</strong> ${res.cleanser}</li>
+            <li><strong>Dawaynta:</strong> ${res.recommendedActive}</li>
+            <li><strong>Kiriimka Habeenka:</strong> ${res.moisturizer}</li>
           </ol>
         </div>
 
-        <button class="btn btn-gold" onclick="navigateTo('shop')">Eeg Alaabta Habkaaga Ku Habboon</button>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-gold" onclick="navigateTo('ai-skin-advisor')">
+            📸 Haddana Sawirka Wejiga ka Falanqee (AI Scan)
+          </button>
+          <button class="btn btn-primary" onclick="navigateTo('shop')">
+            🛒 Eeg Alaabta Habkaaga Ku Habboon
+          </button>
+        </div>
       </div>
     `;
     return;
   }
   
   const q = quizQuestions[quizStep];
-  fill.style.width = `${((quizStep + 1) / quizQuestions.length) * 100}%`;
+  if (fill) fill.style.width = `${((quizStep + 1) / quizQuestions.length) * 100}%`;
   
   container.innerHTML = `
-    <h3 class="font-serif" style="font-size: 1.6rem; margin-bottom: 0.5rem;">Suaasha ${quizStep + 1} ee ${quizQuestions.length}</h3>
-    <p style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 1.5rem;">${q.q}</p>
-    <div class="quiz-option-grid">
+    <span style="font-size: 0.8rem; font-weight: 700; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 0.08em;">Suaasha ${quizStep + 1} ee ${quizQuestions.length}</span>
+    <h3 class="font-serif" style="font-size: 1.4rem; margin: 0.3rem 0 1.25rem; color: var(--emerald-dark);">${q.q}</h3>
+    <div class="quiz-option-grid" style="display: grid; gap: 0.75rem;">
       ${q.options.map(opt => `
-        <div class="quiz-option" onclick="answerQuiz('${opt}')">
-          <strong style="font-size: 0.95rem;">${opt}</strong>
+        <div class="quiz-option" onclick="answerQuiz('${opt.replace(/'/g, "\\'")}')" style="background: var(--bg-primary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem 1.25rem; cursor: pointer; transition: all 0.2s ease;">
+          <strong style="font-size: 0.92rem; color: var(--text-primary);">${opt}</strong>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
         </div>
       `).join('')}
     </div>
