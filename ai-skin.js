@@ -31,63 +31,59 @@ function switchScanTab(tab) {
     btn.style.color = "var(--text-primary)";
   }
 
-  // Stop camera when switching away
-  if (tab !== "camera") stopSkinCamera();
+  // Reset upload when switching away
+  if (tab !== "camera") resetImageUpload();
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// CAMERA FUNCTIONS
+// IMAGE UPLOAD FUNCTIONS
 // ══════════════════════════════════════════════════════════════════════════
-async function startSkinCamera() {
-  const cameraContainer = document.getElementById("camera-container");
-  const video = document.getElementById("skin-camera-feed");
-  const btnStart = document.getElementById("btn-start-camera");
-  const btnCapture = document.getElementById("btn-capture");
-  const btnStop = document.getElementById("btn-stop-camera");
-  const hint = document.getElementById("camera-hint");
+function handleSkinImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
 
-  try {
-    cameraStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } },
-      audio: false,
-    });
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    // Set preview
+    const previewContainer = document.getElementById("image-preview-container");
+    const previewImage = document.getElementById("skin-image-preview");
+    const btnUpload = document.getElementById("btn-start-upload");
+    const btnCapture = document.getElementById("btn-capture");
+    const btnStop = document.getElementById("btn-stop-camera");
+    const scanLine = document.querySelector(".scan-line-anim");
 
-    video.srcObject = cameraStream;
-    cameraContainer.style.display = "block";
-    btnStart.style.display = "none";
-    btnCapture.style.display = "inline-flex";
-    btnStop.style.display = "inline-flex";
-    if (hint) hint.style.display = "block";
+    if (previewImage) previewImage.src = e.target.result;
+    
+    // Extract base64
+    capturedImageBase64 = e.target.result.split(",")[1];
 
-    // Show scan animation
-    document.querySelector(".scan-line-anim").style.display = "block";
-  } catch (err) {
-    const msg =
-      err.name === "NotAllowedError"
-        ? "⚠️ Ogolaanshaha kamaradda la diidday. Ogolow kamaradda si aad u isticmaasho."
-        : `❌ Kamaradda lama heli karin: ${err.message}`;
-    showAISkinError(msg);
-  }
+    // Show UI
+    if (previewContainer) previewContainer.style.display = "block";
+    if (btnUpload) btnUpload.style.display = "none";
+    if (btnCapture) btnCapture.style.display = "inline-flex";
+    if (btnStop) btnStop.style.display = "inline-flex";
+    if (scanLine) scanLine.style.display = "block";
+  };
+  reader.readAsDataURL(file);
 }
 
-function stopSkinCamera() {
-  if (cameraStream) {
-    cameraStream.getTracks().forEach((t) => t.stop());
-    cameraStream = null;
-  }
+function resetImageUpload() {
+  capturedImageBase64 = null;
+  const uploadInput = document.getElementById("skin-image-upload");
+  if (uploadInput) uploadInput.value = "";
 
-  const cameraContainer = document.getElementById("camera-container");
-  const btnStart = document.getElementById("btn-start-camera");
+  const previewContainer = document.getElementById("image-preview-container");
+  const previewImage = document.getElementById("skin-image-preview");
+  const btnUpload = document.getElementById("btn-start-upload");
   const btnCapture = document.getElementById("btn-capture");
   const btnStop = document.getElementById("btn-stop-camera");
-  const hint = document.getElementById("camera-hint");
   const scanLine = document.querySelector(".scan-line-anim");
 
-  if (cameraContainer) cameraContainer.style.display = "none";
-  if (btnStart) btnStart.style.display = "inline-flex";
+  if (previewContainer) previewContainer.style.display = "none";
+  if (previewImage) previewImage.src = "";
+  if (btnUpload) btnUpload.style.display = "inline-flex";
   if (btnCapture) btnCapture.style.display = "none";
   if (btnStop) btnStop.style.display = "none";
-  if (hint) hint.style.display = "none";
   if (scanLine) scanLine.style.display = "none";
 }
 
@@ -95,26 +91,14 @@ function stopSkinCamera() {
 // CAPTURE & SEND TO BACKEND
 // ══════════════════════════════════════════════════════════════════════════
 async function captureAndAnalyze() {
-  const video = document.getElementById("skin-camera-feed");
-  const canvas = document.getElementById("skin-capture-canvas");
-
-  if (!video || !video.videoWidth) {
-    showAISkinError("⚠️ Kamaradda weli ma shaqayso. Dib u isku day.");
+  if (!capturedImageBase64) {
+    showAISkinError("⚠️ Fadlan soo dhig sawir marka hore.");
     return;
   }
 
-  // Capture frame
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  const ctx = canvas.getContext("2d");
-  // Mirror the image to match displayed video
-  ctx.translate(canvas.width, 0);
-  ctx.scale(-1, 1);
-  ctx.drawImage(video, 0, 0);
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-  capturedImageBase64 = canvas.toDataURL("image/jpeg", 0.85).split(",")[1];
-  stopSkinCamera();
+  // Optionally stop animation
+  const scanLine = document.querySelector(".scan-line-anim");
+  if (scanLine) scanLine.style.display = "none";
 
   await runGeminiAnalysis("image", capturedImageBase64, null);
 }

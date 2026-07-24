@@ -107,7 +107,7 @@
           <div style="background: var(--bg-card); border: 2px solid var(--gold-primary); border-radius: var(--radius-lg); padding: 2.25rem; text-align: center; box-shadow: var(--shadow-md); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
             <div>
               <div style="width: 76px; height: 76px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-primary), var(--emerald-dark)); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; box-shadow: 0 8px 20px rgba(197,160,89,0.3);">
-                <i class="fa-solid fa-camera" style="font-size: 2.2rem; color: #FFF;"></i>
+                <i class="fa-solid fa-image" style="font-size: 2.2rem; color: #FFF;"></i>
               </div>
               <span style="font-size: 0.75rem; font-weight: 700; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 0.1em;">AI Vision Technology</span>
               <h2 class="font-serif" style="font-size: 1.8rem; margin: 0.4rem 0 0.75rem; color: var(--emerald-dark);">
@@ -117,8 +117,8 @@
                 Kamaradda wejigaaga ku aad! Gemini AI Vision waxay si sax ah u baaraysaa finanka, dufanka, qallaylka & dhibcaha madow.
               </p>
             </div>
-            <button class="btn btn-gold" style="width: 100%; padding: 0.95rem; font-size: 1rem; border-radius: var(--radius-md);" onclick="navigateTo('ai-skin-advisor'); setTimeout(() => startSkinCamera(), 300);">
-              ✨ Bilow Sawirka Wejiga (Camera)
+            <button class="btn btn-gold" style="width: 100%; padding: 0.95rem; font-size: 1rem; border-radius: var(--radius-md);" onclick="navigateTo('ai-skin-advisor');">
+              ✨ Bilow Sawirka Wejiga (Upload)
             </button>
           </div>
 
@@ -144,17 +144,7 @@
         </div>
       </div>
 
-      <!-- Quick Featured Products -->
-      <div class="section container" style="padding-top: 1rem;">
-        <div class="section-header">
-          <span class="section-subtitle">Dukaanka Bilic</span>
-          <h2 class="section-title">Alaabta Ugu Caansan</h2>
-        </div>
-        <div class="products-grid" id="home-best-sellers-grid">
-          <!-- Rendered via JS -->
-        </div>
-      </div>
-
+      <!-- Home page is now simplified with just the AI Scan and Skin Quiz -->
     </section>
 
     <!-- SHOP CATALOG VIEW -->
@@ -215,53 +205,43 @@
           <!-- Mode Tabs -->
           <div style="display: flex; gap: 0.5rem; border-bottom: 2px solid var(--border-color); margin-bottom: 1.75rem;">
             <button class="scan-tab-btn active" data-scan-tab="camera" onclick="switchScanTab('camera')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-primary); border-bottom: 3px solid var(--gold-primary); transition: all 0.3s ease;">
-              📸 Sawirka Wejiga (AI Scanner)
+              📸 Sawirka Wejiga (Upload)
             </button>
             <button class="scan-tab-btn" data-scan-tab="text" onclick="switchScanTab('text')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-muted); border-bottom: 3px solid transparent; transition: all 0.3s ease;">
               ✍️ Sharaxaad Qoraal ah
             </button>
           </div>
 
-          <!-- TAB 1: CAMERA SCANNER -->
+          <!-- TAB 1: IMAGE UPLOAD SCANNER -->
           <div id="scan-tab-camera" class="scan-tab-content" style="display: block;">
             
             <div style="text-align: center; margin-bottom: 1.5rem;">
               <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">
-                Kamaradda shid, wejigaaga ku aad xarriiqda oval-ka ah, ka dibna riix <strong>"Sawir oo Falanqee"</strong>.
+                Fadlan soo dhig sawir wejigaaga ah si AI-du u falanqeyso. Sawirka waa inuu si cad u muuqdaa.
               </p>
               
-              <!-- Start Camera Button (if stopped) -->
-              <button id="btn-start-camera" class="btn btn-gold" onclick="startSkinCamera()" style="font-size: 1rem; padding: 0.85rem 1.75rem;">
-                <i class="fa-solid fa-camera"></i> Shid Kamaradda Wejiga
+              <!-- File Upload Input -->
+              <input type="file" id="skin-image-upload" accept="image/*" style="display: none;" onchange="handleSkinImageUpload(event)">
+              <button id="btn-start-upload" class="btn btn-gold" onclick="document.getElementById('skin-image-upload').click()" style="font-size: 1rem; padding: 0.85rem 1.75rem;">
+                <i class="fa-solid fa-image"></i> Soo Dhig Sawir (Upload)
               </button>
             </div>
 
-            <!-- Video Feed Container with Face Oval Guide -->
-            <div id="camera-container" style="display: none; position: relative; width: 100%; max-width: 460px; height: 380px; margin: 0 auto 1.5rem; border-radius: var(--radius-lg); overflow: hidden; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 2px solid var(--gold-primary);">
-              <video id="skin-camera-feed" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1);"></video>
+            <!-- Image Preview Container -->
+            <div id="image-preview-container" style="display: none; position: relative; width: 100%; max-width: 460px; min-height: 200px; margin: 0 auto 1.5rem; border-radius: var(--radius-lg); overflow: hidden; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 2px solid var(--gold-primary);">
+              <img id="skin-image-preview" src="" alt="Sawirkaaga" style="width: 100%; height: auto; object-fit: contain; display: block;">
               
-              <!-- Face Oval Guide Overlay -->
-              <div class="face-oval-guide" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 210px; height: 270px; border: 2px dashed var(--gold-primary); border-radius: 50%; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45); pointer-events: none;">
-                <span style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); font-size: 0.75rem; color: var(--gold-primary); text-transform: uppercase; font-weight: 700; white-space: nowrap; background: rgba(0,0,0,0.7); padding: 3px 10px; border-radius: 12px;">Wejiga Halkan Ku Aad</span>
-              </div>
-
               <!-- Animated Scan Line -->
               <div class="scan-line-anim" style="display: none; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--gold-primary), #FFF, var(--gold-primary), transparent); box-shadow: 0 0 15px var(--gold-primary); animation: scanAnimation 2.2s infinite ease-in-out;"></div>
             </div>
 
-            <canvas id="skin-capture-canvas" style="display: none;"></canvas>
-
-            <p id="camera-hint" style="display: none; text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.25rem;">
-              <i class="fa-solid fa-lightbulb" style="color: var(--gold-primary);"></i> Talo: Hubi inay jirto ileys ku filan oo wejigaagu si cad u muuqdo.
-            </p>
-
-            <!-- Camera Actions -->
+            <!-- Upload Actions -->
             <div style="display: flex; gap: 1rem; justify-content: center;">
               <button id="btn-capture" class="btn btn-gold" onclick="captureAndAnalyze()" style="display: none; font-size: 1rem; padding: 0.85rem 1.75rem;">
-                ✨ Sawir oo Falanqee (AI Vision)
+                ✨ Falanqee Sawirka (AI Vision)
               </button>
-              <button id="btn-stop-camera" class="btn btn-outline" onclick="stopSkinCamera()" style="display: none;">
-                <i class="fa-solid fa-xmark"></i> Dambay
+              <button id="btn-stop-camera" class="btn btn-outline" onclick="resetImageUpload()" style="display: none;">
+                <i class="fa-solid fa-xmark"></i> Tirtir Sawirka
               </button>
             </div>
 
@@ -637,7 +617,7 @@
       <div class="drawer-body" style="padding: 1rem 1.25rem;">
         <ul class="mobile-nav-list" style="list-style: none; margin: 0; padding: 0;">
           <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('home'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-house" style="color: var(--gold-primary);"></i> <span>Hoyga</span></a></li>
-          <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('ai-skin-advisor'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-camera" style="color: var(--gold-primary);"></i> <span>📸 AI Face Scan (Camera)</span></a></li>
+          <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('ai-skin-advisor'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-image" style="color: var(--gold-primary);"></i> <span>📸 AI Face Scan (Sawir)</span></a></li>
           <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('skin-quiz'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-clipboard-list" style="color: var(--gold-primary);"></i> <span>📋 Imtixaanka Maqaarka</span></a></li>
           <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('shop'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-bag-shopping" style="color: var(--gold-primary);"></i> <span>Dukaanka Labbiska & Daryeelka</span></a></li>
           <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('outfit-builder'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-shirt" style="color: var(--gold-primary);"></i> <span>Naqshadeeyaha Labbiska</span></a></li>
@@ -656,8 +636,8 @@
       <i class="fa-solid fa-house"></i>
       <span>Hoyga</span>
     </button>
-    <button class="mobile-bottom-btn" onclick="navigateTo('ai-skin-advisor'); setTimeout(() => startSkinCamera(), 300);">
-      <i class="fa-solid fa-camera"></i>
+    <button class="mobile-bottom-btn" onclick="navigateTo('ai-skin-advisor');">
+      <i class="fa-solid fa-image"></i>
       <span>AI Scan</span>
     </button>
     <button class="mobile-bottom-btn" onclick="navigateTo('skin-quiz')">
