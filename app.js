@@ -191,6 +191,10 @@ function toggleDrawer(drawerId) {
   }
 }
 
+function toggleMobileMenu() {
+  toggleDrawer('mobile-menu-drawer');
+}
+
 // THEME & CURRENCY
 function toggleTheme() {
   state.theme = state.theme === 'light' ? 'dark' : 'light';

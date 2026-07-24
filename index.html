@@ -68,8 +68,11 @@
         <button class="icon-btn" onclick="state.authUser ? navigateTo('dashboard') : navigateTo('auth')" title="Profile-ka">
           <i class="fa-regular fa-user"></i>
         </button>
-        <button class="btn btn-primary btn-sm" onclick="navigateTo('admin')" style="margin-left: 0.5rem;" id="nav-admin-btn">
+        <button class="btn btn-primary btn-sm desktop-only" onclick="navigateTo('admin')" style="margin-left: 0.5rem;" id="nav-admin-btn">
           <i class="fa-solid fa-chart-line"></i> Maamulka
+        </button>
+        <button class="icon-btn mobile-menu-toggle" onclick="toggleMobileMenu()" title="Menu-ga Mobile-ka">
+          <i class="fa-solid fa-bars"></i>
         </button>
       </div>
     </div>
@@ -617,6 +620,59 @@
       </div>
     </div>
   </footer>
+
+  <!-- MOBILE SLIDE-OUT MENU DRAWER -->
+  <div id="mobile-menu-drawer" class="drawer-overlay">
+    <div class="drawer-content mobile-menu-content">
+      <div class="drawer-header" style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-color);">
+        <div class="logo-brand">
+          <div class="logo-symbol">B</div>
+          <div>
+            <span class="logo-text">BILIC</span>
+            <span class="logo-tag">QURUXDA IYO LABBISKA</span>
+          </div>
+        </div>
+        <button class="icon-btn" onclick="toggleMobileMenu()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="drawer-body" style="padding: 1rem 1.25rem;">
+        <ul class="mobile-nav-list" style="list-style: none; margin: 0; padding: 0;">
+          <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('home'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-house" style="color: var(--gold-primary);"></i> <span>Hoyga</span></a></li>
+          <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('ai-skin-advisor'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-camera" style="color: var(--gold-primary);"></i> <span>📸 AI Face Scan (Camera)</span></a></li>
+          <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('skin-quiz'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-clipboard-list" style="color: var(--gold-primary);"></i> <span>📋 Imtixaanka Maqaarka</span></a></li>
+          <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('shop'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-bag-shopping" style="color: var(--gold-primary);"></i> <span>Dukaanka Labbiska & Daryeelka</span></a></li>
+          <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('outfit-builder'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-shirt" style="color: var(--gold-primary);"></i> <span>Naqshadeeyaha Labbiska</span></a></li>
+          <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('color-matcher'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-palette" style="color: var(--gold-primary);"></i> <span>Isku-dheellitirka Midabbada</span></a></li>
+          <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('community'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-users" style="color: var(--gold-primary);"></i> <span>Bulshada</span></a></li>
+          <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('blog'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-newspaper" style="color: var(--gold-primary);"></i> <span>Maqaallada</span></a></li>
+          <li style="margin-bottom: 0.5rem;"><a onclick="state.authUser ? navigateTo('dashboard') : navigateTo('auth'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-user" style="color: var(--gold-primary);"></i> <span>Profile / Koontada</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE STICKY BOTTOM NAVIGATION BAR -->
+  <div class="mobile-bottom-nav">
+    <button class="mobile-bottom-btn" onclick="navigateTo('home')">
+      <i class="fa-solid fa-house"></i>
+      <span>Hoyga</span>
+    </button>
+    <button class="mobile-bottom-btn" onclick="navigateTo('ai-skin-advisor'); setTimeout(() => startSkinCamera(), 300);">
+      <i class="fa-solid fa-camera"></i>
+      <span>AI Scan</span>
+    </button>
+    <button class="mobile-bottom-btn" onclick="navigateTo('skin-quiz')">
+      <i class="fa-solid fa-clipboard-list"></i>
+      <span>Quiz</span>
+    </button>
+    <button class="mobile-bottom-btn" onclick="toggleDrawer('cart-drawer')">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <span>Gaadhiga</span>
+    </button>
+    <button class="mobile-bottom-btn" onclick="state.authUser ? navigateTo('dashboard') : navigateTo('auth')">
+      <i class="fa-solid fa-user"></i>
+      <span>Koontada</span>
+    </button>
+  </div>
 
   <script src="supabase.js"></script>
   <script src="ai-skin.js"></script>
