@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilic – Quruxda iyo Labbiska Soomaaliyeed</title>
+  <meta name="description" content="Bilic waa xarun casri ah oo isu keenta daryeelka maqaarka, talooyinka AI, iyo labbis Soomaaliyeed oo tayo sare leh.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+      <div class="announcement-ticker">
+        <i class="fa-solid fa-crown" style="color: var(--gold-primary);"></i>
+        <span>✨ Dhiibis Bilaash ah oo ku baahsan Soomaaliya & Bariga Afrika | Qurbo-joogta Waa Loo Dirayaa</span>
+      </div>
+      <div class="top-bar-controls">
+        <select id="currency-select" class="pill-select" onchange="changeCurrency(this.value)">
+          <option value="USD">USD ($)</option>
+          <option value="SOS">SOS (Sh.So)</option>
+          <option value="EUR">EUR (€)</option>
+        </select>
+        <button class="pill-btn" onclick="toggleTheme()">
+          <i class="fa-solid fa-moon" id="theme-icon"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="main-header">
+    <div class="container nav-container">
+      <a href="#" class="logo-brand" onclick="navigateTo('home')">
+        <div class="logo-symbol">B</div>
+        <div>
+          <span class="logo-text">BILIC</span>
+          <span class="logo-tag">QURUXDA IYO LABBISKA</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a class="nav-link active" onclick="navigateTo('home')" id="nav-home">Hoyga</a></li>
+        <li><a class="nav-link" onclick="navigateTo('shop')" id="nav-shop">Dukaanka Labbiska</a></li>
+        <li><a class="nav-link" onclick="navigateTo('skin-quiz')" id="nav-skincare">Imtixaanka Maqaarka</a></li>
+        <li><a class="nav-link" onclick="navigateTo('outfit-builder')" id="nav-fashion">Naqshadeeyaha Labbiska</a></li>
+        <li><a class="nav-link" onclick="navigateTo('ai-skin-advisor')" id="nav-ai">Lataliyaha AI</a></li>
+        <li><a class="nav-link" onclick="navigateTo('community')" id="nav-community">Bulshada</a></li>
+        <li><a class="nav-link" onclick="navigateTo('blog')" id="nav-blog">Maqaallada</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div id="auth-status-indicator" style="display: none; align-items: center; margin-right: 0.5rem;"></div>
+        <button class="icon-btn" onclick="toggleDrawer('search-drawer')" title="Raadi">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <button class="icon-btn" onclick="toggleDrawer('wishlist-drawer')" title="Kaydka">
+          <i class="fa-regular fa-heart"></i>
+          <span class="badge" id="wishlist-count">0</span>
+        </button>
+        <button class="icon-btn" onclick="toggleDrawer('cart-drawer')" title="Gaadhiga Wax Iibsiga">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="badge" id="cart-count">1</span>
+        </button>
+        <button class="icon-btn" onclick="state.authUser ? navigateTo('dashboard') : navigateTo('auth')" title="Profile-ka">
+          <i class="fa-regular fa-user"></i>
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="navigateTo('admin')" style="margin-left: 0.5rem;" id="nav-admin-btn">
+          <i class="fa-solid fa-chart-line"></i> Maamulka
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP VIEWS CONTAINER -->
+  <main id="app-content">
+
+    <!-- HOME VIEW -->
+    <section id="view-home" class="app-view">
+      <!-- Hero Banner -->
+      <div class="hero-section">
+        <div class="container">
+          <div class="hero-content">
+            <span class="hero-tag">🌟 Bilic – Quruxda iyo Labbiska Soomaaliyeed</span>
+            <h1 class="hero-title">Quruxdu Waxay La Kulantaa <span>Labbiska Casriga ah</span></h1>
+            <p class="hero-subtitle">Baro daryeelka saxda ah ee maqaarkaaga, hel talooyin ku salaysan AI, kana dooro labbis Soomaaliyeed oo tayo iyo qurux leh.</p>
+            <div class="hero-actions">
+              <button class="btn btn-gold" onclick="navigateTo('shop')">
+                <span>🧴 Dukaanka Daryeelka Maqaarka</span>
+              </button>
+              <button class="btn btn-primary" onclick="navigateTo('outfit-builder')">
+                <span>👗 Dukaanka Labbiska</span>
+              </button>
+              <button class="btn btn-outline" onclick="navigateTo('skin-quiz')" style="border-color: #FAF8F5; color: #FAF8F5;">
+                <span>✨ Bilow Imtixaanka Maqaarka</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Nav Strip (Adeegyada Bilic) -->
+      <div class="section" style="padding: 3rem 0; background: var(--bg-secondary); border-bottom: 1px solid var(--border-color);">
+        <div class="container">
+          <div class="section-header" style="margin-bottom: 2.5rem;">
+            <span class="section-subtitle">Adeegyada Bilic</span>
+            <h2 class="section-title">Adeegyada Ugu Muhiimsan</h2>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; cursor: pointer;" onclick="navigateTo('skin-quiz')">
+              <h3 class="font-serif" style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">🧴 Imtixaanka Maqaarka</h3>
+              <p style="font-size: 0.9rem; color: var(--text-secondary);">Ogow nooca maqaarkaaga oo hel talooyin kuu gaar ah.</p>
+            </div>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; cursor: pointer;" onclick="navigateTo('skin-quiz')">
+              <h3 class="font-serif" style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">📋 Qorshaha Daryeelka Maqaarka</h3>
+              <p style="font-size: 0.9rem; color: var(--text-secondary);">Hel jadwalka subax iyo habeen ee ku habboon maqaarkaaga.</p>
+            </div>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; cursor: pointer;" onclick="navigateTo('ai-skin-advisor')">
+              <h3 class="font-serif" style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">🤖 Lataliyaha Maqaarka AI</h3>
+              <p style="font-size: 0.9rem; color: var(--text-secondary);">Waydii AI wixii ku saabsan finan, dhibco madow, dufan badan ama qallayl, si aad u hesho talooyin iyo daryeel ku habboon.</p>
+            </div>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; cursor: pointer;" onclick="navigateTo('outfit-builder')">
+              <h3 class="font-serif" style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">👗 Naqshadeeyaha Labbiska</h3>
+              <p style="font-size: 0.9rem; color: var(--text-secondary);">Isku-dubarid Dirac, Cabaaya, Jalbaab iyo agab kale si aad u hesho muuqaal qurux badan.</p>
+            </div>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; cursor: pointer;" onclick="navigateTo('color-matcher')">
+              <h3 class="font-serif" style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">🎨 Isku-dheellitirka Midabbada</h3>
+              <p style="font-size: 0.9rem; color: var(--text-secondary);">Baro midabbada si fiican isugu habboon labbiskaaga.</p>
+            </div>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; cursor: pointer;" onclick="navigateTo('skin-tracker')">
+              <h3 class="font-serif" style="font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">📈 La Socodka Horumarka Maqaarka</h3>
+              <p style="font-size: 0.9rem; color: var(--text-secondary);">Kaydi oo la soco isbeddelka iyo caafimaadka maqaarkaaga waqti ka dib.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured Categories (Qaybaha Ugu Muhiimsan) -->
+      <div class="section container">
+        <div class="section-header">
+          <span class="section-subtitle">Qaybaha Ugu Muhiimsan</span>
+          <h2 class="section-title">Ka Isoobax Qaybaha</h2>
+          <p class="section-desc">Soo hel daryeel tayo leh iyo labbis Soomaaliyeed oo casri ah.</p>
+        </div>
+        <div class="category-grid">
+          <div class="category-card" onclick="filterShopCategory('daryeelka-maqaarka')">
+            <img src="./images/serum.jpg" alt="Daryeelka Maqaarka">
+            <div class="category-overlay">
+              <h3 class="category-title">🧴 Daryeelka Maqaarka</h3>
+              <span class="category-count">18 Alaabood</span>
+            </div>
+          </div>
+          <div class="category-card" onclick="filterShopCategory('dirac')">
+            <img src="./images/dirac.jpg" alt="Diracyo Soomaaliyeed">
+            <div class="category-overlay">
+              <h3 class="category-title">👗 Diracyo Soomaaliyeed</h3>
+              <span class="category-count">24 Naqshadood</span>
+            </div>
+          </div>
+          <div class="category-card" onclick="filterShopCategory('abayas')">
+            <img src="./images/hero.jpg" alt="Cabaayado">
+            <div class="category-overlay">
+              <h3 class="category-title">🖤 Cabaayado</h3>
+              <span class="category-count">15 Nooc</span>
+            </div>
+          </div>
+          <div class="category-card" onclick="filterShopCategory('hijabs')">
+            <img src="./images/dirac.jpg" alt="Jalbaabyo">
+            <div class="category-overlay">
+              <h3 class="category-title">🧕 Jalbaabyo</h3>
+              <span class="category-count">32 Midab</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Teasers (Awoodda AI) -->
+      <div class="section" style="background: var(--bg-tertiary);">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-subtitle">Awoodda AI</span>
+            <h2 class="section-title">Ka Faa'iidayso AI</h2>
+            <p class="section-desc">Ka faa'iidayso AI si aad u hesho talooyin ku habboon baahidaada.</p>
+          </div>
+          <div class="ai-banner-grid">
+            <div class="ai-card">
+              <div class="ai-icon-bubble"><i class="fa-solid fa-robot"></i></div>
+              <h3 class="font-serif" style="font-size: 1.8rem; margin-bottom: 0.75rem;">🤖 Lataliyaha Maqaarka AI</h3>
+              <p style="color: var(--text-secondary); margin-bottom: 1rem;">Sharax dhibaatada maqaarkaaga sida:</p>
+              <ul style="margin-left: 1.25rem; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+                <li>Finan</li>
+                <li>Dhibco madow</li>
+                <li>Dufan badan</li>
+                <li>Qallayl</li>
+                <li>Xasaasiyad</li>
+              </ul>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">AI-du waxay kuu diyaarinaysaa talooyin iyo nidaam daryeel oo ku habboon.</p>
+              <button class="btn btn-primary" onclick="navigateTo('ai-skin-advisor')">➡️ Bilow Lataliyaha AI</button>
+            </div>
+            <div class="ai-card">
+              <div class="ai-icon-bubble"><i class="fa-solid fa-shirt"></i></div>
+              <h3 class="font-serif" style="font-size: 1.8rem; margin-bottom: 0.75rem;">👗 Lataliyaha Labbiska AI</h3>
+              <p style="color: var(--text-secondary); margin-bottom: 1rem;">Dooro munaasabadda: Ciid, Aroos, Qalin-jabin, Shaqo, Jaamacad, Maalin kasta.</p>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">AI-du waxay kuu soo jeedinaysaa: Dirac, Cabaaya, Jalbaab, Kabo, Boorso, Agab kale oo isugu habboon.</p>
+              <button class="btn btn-gold" onclick="navigateTo('ai-stylist')">➡️ Bilow Lataliyaha Labbiska</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Best Sellers Grid (Alaabta Ugu Caansan) -->
+      <div class="section container">
+        <div class="section-header">
+          <span class="section-subtitle">Alaabta Ugu Caansan</span>
+          <h2 class="section-title">Alaabta Ugu Iibka Badan</h2>
+          <p class="section-desc">Alaabta ugu iibka badan ee ay macaamiishu aadka u jecel yihiin.</p>
+        </div>
+        <div class="products-grid" id="home-best-sellers-grid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SHOP CATALOG VIEW -->
+    <section id="view-shop" class="app-view" style="display: none;">
+      <div class="section container">
+        <div class="section-header">
+          <span class="section-subtitle">Dukaanka Labbiska & Daryeelka</span>
+          <h2 class="section-title">Alaabta Bilic</h2>
+        </div>
+
+        <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2rem; justify-content: space-between; align-items: center;">
+          <div class="tabs-nav" style="margin-bottom: 0;">
+            <button class="tab-btn active" onclick="filterShopTab('all', this)">Dhammaan</button>
+            <button class="tab-btn" onclick="filterShopTab('daryeelka-maqaarka', this)">Daryeelka Maqaarka</button>
+            <button class="tab-btn" onclick="filterShopTab('dirac', this)">Diracyo Soomaaliyeed</button>
+            <button class="tab-btn" onclick="filterShopTab('abayas', this)">Cabaayado</button>
+            <button class="tab-btn" onclick="filterShopTab('hijabs', this)">Jalbaabyo</button>
+          </div>
+        </div>
+
+        <div class="products-grid" id="shop-catalog-grid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SKIN QUIZ VIEW -->
+    <section id="view-skin-quiz" class="app-view" style="display: none;">
+      <div class="section container">
+        <div class="section-header">
+          <span class="section-subtitle">Imtixaanka Maqaarka</span>
+          <h2 class="section-title">Ogow Nooca Maqaarkaaga</h2>
+          <p class="section-desc">Ogow nooca maqaarkaaga oo hel talooyin kuu gaar ah iyo qorshaha daryeelka maqaarka.</p>
+        </div>
+
+        <div class="quiz-card" id="quiz-card-wrapper">
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" id="quiz-progress" style="width: 50%;"></div>
+          </div>
+          <div id="quiz-step-content">
+            <!-- Step content dynamically rendered -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI SKIN ADVISOR VIEW -->
+    <section id="view-ai-skin-advisor" class="app-view" style="display: none;">
+      <div class="section container">
+        <div class="section-header">
+          <span class="section-subtitle">Lataliyaha Maqaarka AI</span>
+          <h2 class="section-title">Waydii AI-da Maqaarkaaga</h2>
+          <p class="section-desc">Waydii AI wixii ku saabsan finan, dhibco madow, dufan badan ama qallayl, si aad u hesho talooyin iyo daryeel ku habboon.</p>
+        </div>
+
+        <div style="max-width: 800px; margin: 0 auto; background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-md);">
+          <div style="background: var(--gold-light); border: 1px solid var(--gold-primary); padding: 1rem; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-primary); margin-bottom: 1.5rem; display: flex; gap: 0.75rem; align-items: flex-start;">
+            <i class="fa-solid fa-triangle-exclamation" style="color: var(--gold-primary); font-size: 1.2rem; margin-top: 2px;"></i>
+            <span><strong>Ogeysiis Caafimaad:</strong> Lataliyaha AI-da ee Bilic wuxuu bixiyaa talooyin daryeel oo aqooneed. Ma aha talo dhakhtar rasmi ah.</span>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <label style="font-weight: 600; display: block; margin-bottom: 0.5rem;">Sharax dhibaatada maqaarkaaga (Finan, Dhibco madow, Dufan badan, Qallayl, Xasaasiyad):</label>
+            <textarea id="ai-skin-prompt" rows="4" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); outline: none;" placeholder="Sharax dhibaatada maqaarkaaga si aad u hesho talooyin iyo nidaam daryeel oo ku habboon..."></textarea>
+          </div>
+
+          <div style="margin-bottom: 2rem;">
+            <div style="border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; text-align: center; background: var(--bg-tertiary); cursor: pointer;" onclick="simulatePhotoUpload()">
+              <i class="fa-solid fa-camera" style="font-size: 2rem; color: var(--gold-primary); margin-bottom: 0.5rem;"></i>
+              <p style="font-size: 0.9rem; color: var(--text-secondary);" id="photo-upload-status">Riix si aad u baarto sawirka maqaarkaaga (AI Scanner)</p>
+            </div>
+          </div>
+
+          <button class="btn btn-gold" style="width: 100%;" onclick="runAISkinAnalysis()">
+            ➡️ Bilow Lataliyaha AI
+          </button>
+
+          <div id="ai-skin-result" style="display: none; margin-top: 2rem; padding-top: 2rem; border-top: 1px dashed var(--border-color);">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OUTFIT BUILDER VIEW -->
+    <section id="view-outfit-builder" class="app-view" style="display: none;">
+      <div class="section container">
+        <div class="section-header">
+          <span class="section-subtitle">Naqshadeeyaha Labbiska</span>
+          <h2 class="section-title">Isku-dubarid Labbiskaaga</h2>
+          <p class="section-desc">Isku-dubarid Dirac, Cabaaya, Jalbaab iyo agab kale si aad u hesho muuqaal qurux badan.</p>
+        </div>
+
+        <div class="outfit-builder-layout">
+          <div>
+            <div class="outfit-canvas">
+              <div class="outfit-slot">
+                <span style="font-size: 0.75rem; color: var(--gold-primary); text-transform: uppercase; font-weight: 700;">Dirac / Cabaaya</span>
+                <img id="slot-top-img" src="./images/dirac.jpg" alt="Selected Top">
+                <span id="slot-top-title" style="font-size: 0.85rem; font-weight: 600; margin-top: 0.5rem;">Dirac Xariir ah oo Soomaaliyeed iyo Garbasaar</span>
+                <span id="slot-top-price" style="font-size: 0.8rem; color: var(--emerald-dark); font-weight: 700;">$140</span>
+              </div>
+              <div class="outfit-slot">
+                <span style="font-size: 0.75rem; color: var(--gold-primary); text-transform: uppercase; font-weight: 700;">Jalbaab / Garbasaar</span>
+                <img id="slot-hijab-img" src="./images/hero.jpg" alt="Selected Hijab">
+                <span id="slot-hijab-title" style="font-size: 0.85rem; font-weight: 600; margin-top: 0.5rem;">Jalbaab Chiffon ah</span>
+                <span id="slot-hijab-price" style="font-size: 0.8rem; color: var(--emerald-dark); font-weight: 700;">$35</span>
+              </div>
+              <div class="outfit-slot">
+                <span style="font-size: 0.75rem; color: var(--gold-primary); text-transform: uppercase; font-weight: 700;">Boorso / Agab Kale</span>
+                <img id="slot-bag-img" src="./images/serum.jpg" alt="Selected Bag">
+                <span id="slot-bag-title" style="font-size: 0.85rem; font-weight: 600; margin-top: 0.5rem;">Shanta Gacanta ee Dahabiga ah</span>
+                <span id="slot-bag-price" style="font-size: 0.8rem; color: var(--emerald-dark); font-weight: 700;">$85</span>
+              </div>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+              <button class="btn btn-gold" style="flex: 1;" onclick="saveCurrentOutfit()">
+                <i class="fa-regular fa-bookmark"></i> Kaydi Labbiskaaga
+              </button>
+              <button class="btn btn-primary" style="flex: 1;" onclick="addAllOutfitToCart()">
+                <i class="fa-solid fa-cart-plus"></i> Ku Add Gaadhiga Wax Iibsiga
+              </button>
+            </div>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem;">
+            <h3 class="font-serif" style="font-size: 1.4rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Dooro Agabka Labbiska</h3>
+            <div class="tabs-nav" style="margin-bottom: 1rem;">
+              <button class="tab-btn active" onclick="switchOutfitCategory('top', this)">Dirac/Cabaaya</button>
+              <button class="tab-btn" onclick="switchOutfitCategory('hijab', this)">Jalbaabyo</button>
+              <button class="tab-btn" onclick="switchOutfitCategory('bag', this)">Boorso/Agab Kale</button>
+            </div>
+            <div id="outfit-picker-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-height: 420px; overflow-y: auto;">
+              <!-- Items rendered JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLOR MATCHER VIEW -->
+    <section id="view-color-matcher" class="app-view" style="display: none;">
+      <div class="section container">
+        <div class="section-header">
+          <span class="section-subtitle">Isku-dheellitirka Midabbada</span>
+          <h2 class="section-title">Baro Midabbada Isu Habboon</h2>
+          <p class="section-desc">Baro midabbada si fiican isugu habboon labbiskaaga.</p>
+        </div>
+
+        <div style="max-width: 800px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-md);">
+          <h4 style="margin-bottom: 1rem;">Dooro Midabka Labbiskaaga:</h4>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
+            <button class="btn btn-outline btn-sm" onclick="selectColorMatch('black')" style="background: #121212; color: #FFF; border-color: #121212;">Madow</button>
+            <button class="btn btn-outline btn-sm" onclick="selectColorMatch('emerald')" style="background: #0D2818; color: #FAF0CA; border-color: #0D2818;">Cagaar</button>
+            <button class="btn btn-outline btn-sm" onclick="selectColorMatch('navy')" style="background: #1B263B; color: #FFF; border-color: #1B263B;">Buluu</button>
+          </div>
+
+          <div id="color-match-output">
+            <!-- Output rendered JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI FASHION STYLIST VIEW -->
+    <section id="view-ai-stylist" class="app-view" style="display: none;">
+      <div class="section container">
+        <div class="section-header">
+          <span class="section-subtitle">Lataliyaha Labbiska AI</span>
+          <h2 class="section-title">Dooro Munaasabadda</h2>
+          <p class="section-desc">Dooro munaasabadda: Ciid, Aroos, Qalin-jabin, Shaqo, Jaamacad, ama Maalin kasta si aad u hesho talooyinka AI-da.</p>
+        </div>
+
+        <div style="max-width: 750px; margin: 0 auto; background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-md);">
+          <div style="margin-bottom: 1.5rem;">
+            <label style="font-weight: 600; display: block; margin-bottom: 0.5rem;">Dooro Munaasabadda:</label>
+            <select id="stylist-occasion" class="pill-select" style="width: 100%; background: var(--bg-primary); color: var(--text-primary); padding: 0.75rem; border-color: var(--border-color);">
+              <option value="ciid">Ciid</option>
+              <option value="aroos">Aroos</option>
+              <option value="qalin-jabin">Qalin-jabin</option>
+              <option value="shaqo">Shaqo</option>
+              <option value="jaamacad">Jaamacad</option>
+              <option value="maalin-kasta">Maalin kasta</option>
+            </select>
+          </div>
+
+          <button class="btn btn-gold" style="width: 100%;" onclick="runAIFashionStylist()">
+            ➡️ Bilow Lataliyaha Labbiska
+          </button>
+
+          <div id="ai-stylist-result" style="display: none; margin-top: 2rem; padding-top: 2rem; border-top: 1px dashed var(--border-color);">
+            <!-- Rendered JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AUTH VIEW (Login / Register / Forgot Password) -->
+    <section id="view-auth" class="app-view" style="display: none;">
+      <div class="section container">
+        <div style="max-width: 520px; margin: 0 auto;">
+          
+          <!-- Auth Brand Header -->
+          <div style="text-align: center; margin-bottom: 2rem;">
+            <div class="logo-symbol" style="width: 64px; height: 64px; font-size: 2rem; margin: 0 auto 1rem;">B</div>
+            <h2 class="font-serif" style="font-size: 2rem; color: var(--emerald-dark);">Ku Soo Dhawoow Bilic</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Gal koontadaada ama samee koonto cusub.</p>
+          </div>
+
+          <!-- Auth Tab Navigation -->
+          <div style="display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 2rem;">
+            <button class="auth-tab-btn active" data-auth-tab="login" onclick="switchAuthTab('login')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-primary); border-bottom: 3px solid var(--gold-primary); transition: all 0.3s ease;">🔐 Galitaanka</button>
+            <button class="auth-tab-btn" data-auth-tab="signup" onclick="switchAuthTab('signup')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-muted); border-bottom: 3px solid transparent; transition: all 0.3s ease;">✨ Isdiiwaangeli</button>
+            <button class="auth-tab-btn" data-auth-tab="reset" onclick="switchAuthTab('reset')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-muted); border-bottom: 3px solid transparent; transition: all 0.3s ease;">🔑 Furaha Cusub</button>
+          </div>
+
+          <!-- LOGIN FORM -->
+          <div id="auth-login" class="auth-tab-content" style="display: block;">
+            <form onsubmit="handleLogin(event)" style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-md);">
+              <div style="margin-bottom: 1.25rem;">
+                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">📧 Emailka</label>
+                <input type="email" id="login-email" required placeholder="magacaaga@email.com" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; box-sizing: border-box;">
+              </div>
+              <div style="margin-bottom: 1.5rem;">
+                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">🔒 Furaha Sirta</label>
+                <input type="password" id="login-password" required placeholder="Furaha sirta ah" minlength="6" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; box-sizing: border-box;">
+              </div>
+              <button type="submit" class="btn btn-gold" style="width: 100%; padding: 0.95rem; font-size: 1rem;">🔐 Gal Koontadaada</button>
+              <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                Ma lihid koonto? <a href="#" onclick="switchAuthTab('signup'); return false;" style="color: var(--gold-primary); font-weight: 600; text-decoration: underline;">Halkan ka samee</a>
+              </p>
+            </form>
+          </div>
+
+          <!-- SIGNUP FORM -->
+          <div id="auth-signup" class="auth-tab-content" style="display: none;">
+            <form onsubmit="handleSignUp(event)" style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-md);">
+              <div style="margin-bottom: 1.25rem;">
+                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">👤 Magacaaga Buuxa</label>
+                <input type="text" id="signup-name" required placeholder="Tusaale: Aamiina Xasan" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; box-sizing: border-box;">
+              </div>
+              <div style="margin-bottom: 1.25rem;">
+                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">📧 Emailka</label>
+                <input type="email" id="signup-email" required placeholder="magacaaga@email.com" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; box-sizing: border-box;">
+              </div>
+              <div style="margin-bottom: 1.25rem;">
+                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">🔒 Furaha Sirta</label>
+                <input type="password" id="signup-password" required placeholder="Ugu yaraan 6 xaraf" minlength="6" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; box-sizing: border-box;">
+              </div>
+              <div style="margin-bottom: 1.5rem;">
+                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">🔒 Xaqiiji Furaha Sirta</label>
+                <input type="password" id="signup-confirm-password" required placeholder="Mar labaad geli furaha" minlength="6" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; box-sizing: border-box;">
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.95rem; font-size: 1rem;">✨ Samee Koontada</button>
+              <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                Horey u leedahay koonto? <a href="#" onclick="switchAuthTab('login'); return false;" style="color: var(--gold-primary); font-weight: 600; text-decoration: underline;">Halkan ka gal</a>
+              </p>
+            </form>
+          </div>
+
+          <!-- FORGOT PASSWORD FORM -->
+          <div id="auth-reset" class="auth-tab-content" style="display: none;">
+            <form onsubmit="handleForgotPassword(event)" style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-md);">
+              <div style="background: var(--gold-light); border: 1px solid var(--gold-primary); padding: 1rem; border-radius: var(--radius-md); font-size: 0.85rem; margin-bottom: 1.5rem; display: flex; gap: 0.75rem; align-items: flex-start;">
+                <i class="fa-solid fa-info-circle" style="color: var(--gold-primary); font-size: 1.1rem; margin-top: 2px;"></i>
+                <span>Link cusub ayaa loo diri doonaa emailkaaga si aad ugu beddesho furaha sirta.</span>
+              </div>
+              <div style="margin-bottom: 1.5rem;">
+                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">📧 Emailka Koontadaada</label>
+                <input type="email" id="reset-email" required placeholder="magacaaga@email.com" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; box-sizing: border-box;">
+              </div>
+              <button type="submit" class="btn btn-gold" style="width: 100%; padding: 0.95rem; font-size: 1rem;">📧 Dir Linkka Cusub</button>
+              <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                <a href="#" onclick="switchAuthTab('login'); return false;" style="color: var(--gold-primary); font-weight: 600; text-decoration: underline;">← Ku laabo Galitaanka</a>
+              </p>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- USER DASHBOARD VIEW -->
+    <section id="view-dashboard" class="app-view" style="display: none;">
+      <div class="section container">
+        <div class="section-header">
+          <span class="section-subtitle">Profile-ka</span>
+          <h2 class="section-title">Bogga Koontadaada</h2>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; max-width: 1000px; margin: 0 auto;">
+          
+          <!-- Profile Card -->
+          <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; text-align: center; box-shadow: var(--shadow-md);">
+            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-primary), var(--emerald-dark)); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 2rem; color: #FFF; font-weight: 700;" id="dash-avatar">A</div>
+            <h3 class="font-serif" style="font-size: 1.4rem; margin-bottom: 0.25rem;" id="dash-name">–</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;" id="dash-email">–</p>
+            <div style="background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); color: #121212; padding: 0.5rem 1rem; border-radius: var(--radius-md); font-weight: 700; font-size: 0.85rem; display: inline-block; margin-bottom: 1rem;" id="dash-vip">VIP</div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">
+              <i class="fa-solid fa-coins" style="color: var(--gold-primary);"></i> <span id="dash-points">0</span> Dhibcood
+            </div>
+            <button class="btn btn-outline btn-sm" style="margin-top: 1.25rem; width: 100%;" onclick="supaLogout()">
+              <i class="fa-solid fa-right-from-bracket"></i> Ka Bax
+            </button>
+          </div>
+
+          <!-- Dashboard Content -->
+          <div>
+            <!-- Quick Stats -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem;">
+              <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
+                <i class="fa-solid fa-bag-shopping" style="font-size: 1.5rem; color: var(--gold-primary); margin-bottom: 0.5rem;"></i>
+                <h4 style="font-size: 1.5rem; font-weight: 700;" id="dash-orders-count">0</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Dalabyo</p>
+              </div>
+              <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
+                <i class="fa-solid fa-heart" style="font-size: 1.5rem; color: #e74c6f; margin-bottom: 0.5rem;"></i>
+                <h4 style="font-size: 1.5rem; font-weight: 700;" id="dash-wishlist-count">0</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Kaydka</p>
+              </div>
+              <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
+                <i class="fa-solid fa-star" style="font-size: 1.5rem; color: var(--gold-primary); margin-bottom: 0.5rem;"></i>
+                <h4 style="font-size: 1.5rem; font-weight: 700;" id="dash-reviews-count">0</h4>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Faallooyinka</p>
+              </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);">
+              <h3 class="font-serif" style="font-size: 1.3rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+                <i class="fa-solid fa-clock-rotate-left" style="color: var(--gold-primary);"></i> Dalabyadii Ugu Dambeeyay
+              </h3>
+              <div id="dash-orders-list">
+                <p style="color: var(--text-muted); text-align: center; padding: 1.5rem; font-size: 0.9rem;">Wali dalabyo kuma jiraan.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CART DRAWER (Gaadhiga Wax Iibsiga) -->
+  <div id="cart-drawer" class="drawer-overlay">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h3 class="font-serif" style="font-size: 1.4rem;"><i class="fa-solid fa-bag-shopping"></i> Gaadhiga Wax Iibsiga</h3>
+        <button class="icon-btn" onclick="toggleDrawer('cart-drawer')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="drawer-body" id="cart-drawer-items">
+        <!-- Rendered JS -->
+      </div>
+      <div class="drawer-footer">
+        <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 1rem;">
+          <span>Wadarta Guud:</span>
+          <span id="cart-subtotal-price" style="color: var(--emerald-dark); font-size: 1.2rem;">$38</span>
+        </div>
+        <button class="btn btn-gold" style="width: 100%;" onclick="navigateTo('checkout'); toggleDrawer('cart-drawer');">🛒 U Gudub Bixinta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col" style="grid-column: 1 / -1; max-width: 800px;">
+          <div class="logo-brand" style="margin-bottom: 1rem;">
+            <div class="logo-symbol" style="background: var(--gold-primary); color: #121212;">B</div>
+            <div>
+              <span class="logo-text" style="color: #FFF;">Bilic</span>
+            </div>
+          </div>
+          <p style="font-size: 0.95rem; color: #D5DFD9; line-height: 1.7; margin-bottom: 1rem;">
+            Bilic waa xarun casri ah oo isu keenta daryeelka maqaarka, talooyinka AI, iyo labbis Soomaaliyeed oo tayo sare leh. Waxaan hiigsanaynaa inaan bulshada Soomaaliyeed siino adeeg casri ah oo isku dara qurux, aqoon, iyo teknoolojiyad.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Bilic. Dhammaan xuquuqdu way dhowran tahay.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="supabase.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
