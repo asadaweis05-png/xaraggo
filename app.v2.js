@@ -7,7 +7,7 @@ const state = {
   theme: 'light',
   currency: 'USD',
   currencyRates: { USD: 1, SOS: 26000, EUR: 0.92 },
-  currencySymbols: { USD: '$', SOS: 'Sh.So ', EUR: 'â‚¬' },
+  currencySymbols: { USD: '$', SOS: 'Sh.So ', EUR: '' },
   
   cart: [
     { id: 'p1', name: 'Serum Niacinamide 10%', price: 38, image: './images/serum.jpg', category: 'Daryeelka Maqaarka', qty: 1 }
@@ -418,7 +418,7 @@ function runAISkinAnalysis() {
     identifiedIssues = ['Finanka firfircoon & Sebum badan', 'Daloolo xirantay'];
     recommendedActives = ['Salicylic Acid 2%', 'Niacinamide 10% & Zinc'];
   } else if (prompt.includes('qallayl') || prompt.includes('dry')) {
-    identifiedIssues = ['Biyo laâ€™aanta maqaarka', 'Barrier-ka oo xasaasi ah'];
+    identifiedIssues = ['Biyo laaanta maqaarka', 'Barrier-ka oo xasaasi ah'];
     recommendedActives = ['Ceramides', 'Hyaluronic Acid'];
   } else if (prompt.includes('xasaasiyad') || prompt.includes('sensitive')) {
     identifiedIssues = ['Casaan & Diirid maqaarka ah'];
@@ -547,7 +547,7 @@ function handleGlobalSearch(query) {
   if (matchedProducts.length === 0) {
     resultsDiv.innerHTML = `
       <div style="padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-md); text-align: center;">
-        <p style="font-weight: 600;">ðŸ¤– AI Assistant: Ma jiro alaab magaceeda yahay "${query}".</p>
+        <p style="font-weight: 600;"> AI Assistant: Ma jiro alaab magaceeda yahay "${query}".</p>
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">Try searching: "Serum", "Dirac", "Cabaaya", or "Jalbaab"</p>
       </div>
     `;
@@ -569,7 +569,7 @@ function handleGlobalSearch(query) {
 // QUIZ WIZARD (6 Detailed Somali Skin Questions)
 const quizQuestions = [
   {
-    q: "1. Sidee maqaarku dareemaa 30â€“60 daqiiqo ka dib marka aad wejiga dhaqato?",
+    q: "1. Sidee maqaarku dareemaa 3060 daqiiqo ka dib marka aad wejiga dhaqato?",
     options: [
       "Qallayl oo giagsan (Maqaarka Qallalan)",
       "Dufan badan oo dhalaalaya (Maqaarka Dufanka Leh)",
@@ -648,7 +648,7 @@ function evaluateQuizResults(answers) {
     moisturizer = 'Lightweight Oil-Free Gel';
   } else if (ansStr.includes('qallalan') || ansStr.includes('qallayl')) {
     skinType = 'Maqaar Qallalan';
-    primaryConcern = 'Biyo Laâ€™aanta Maqaarka & Giagsanaanta';
+    primaryConcern = 'Biyo Laaanta Maqaarka & Giagsanaanta';
     recommendedActive = 'Hyaluronic Acid + Ceramides';
     cleanser = 'Hydrating Cream Cleanser';
     moisturizer = 'Rich Barrier Cream';
@@ -717,10 +717,10 @@ function renderQuizStep() {
 
         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
           <button class="btn btn-gold" onclick="navigateTo('ai-skin-advisor')">
-            ðŸ“¸ Haddana Sawirka Wejiga ka Falanqee (AI Scan)
+             Haddana Sawirka Wejiga ka Falanqee (AI Scan)
           </button>
           <button class="btn btn-primary" onclick="navigateTo('shop')">
-            ðŸ›’ Eeg Alaabta Habkaaga Ku Habboon
+             Eeg Alaabta Habkaaga Ku Habboon
           </button>
         </div>
       </div>
@@ -741,8 +741,6 @@ function renderQuizStep() {
         </div>
       `).join('')}
     </div>
-  `;
-}
   `;
 }
 
@@ -795,7 +793,7 @@ function selectOutfitPiece(category, name, price, image) {
 }
 
 function saveCurrentOutfit() {
-  alert('âœ¨ Labiskaaga waa la kaysiyay!');
+  alert(' Labiskaaga waa la kaysiyay!');
 }
 
 function addAllOutfitToCart() {
@@ -819,7 +817,7 @@ function selectColorMatch(key) {
       <h4 style="font-family: var(--font-serif); font-size: 1.4rem; margin-bottom: 0.5rem;">${pair.title}</h4>
       <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">Midabbada si fiican isugu habboon labbiskaaga:</p>
       <ul style="margin-left: 1.25rem;">
-        ${pair.matches.map(m => `<li style="font-weight: 600; margin-bottom: 0.35rem;">âœ¨ ${m}</li>`).join('')}
+        ${pair.matches.map(m => `<li style="font-weight: 600; margin-bottom: 0.35rem;"> ${m}</li>`).join('')}
       </ul>
     </div>
   `;
@@ -843,7 +841,7 @@ function renderSkinLogHistory() {
   container.innerHTML = state.skinTrackerLogs.map(log => `
     <div style="border-bottom: 1px solid var(--border-color); padding: 0.75rem 0; font-size: 0.85rem;">
       <div style="display: flex; justify-content: space-between; font-weight: 600;">
-        <span>ðŸ“… ${log.date}</span>
+        <span> ${log.date}</span>
         <span style="color: var(--gold-primary);">Qoyanta: ${log.hydration}/10</span>
       </div>
       <p style="color: var(--text-secondary); margin-top: 0.25rem;">Finan: ${log.acne}/10 | Dufan: ${log.oiliness}/10</p>
@@ -900,7 +898,7 @@ function renderForumPosts() {
         <div class="forum-meta">
           <div class="user-avatar">${post.author[0]}</div>
           <div>
-            <strong>${post.author}</strong> â€¢ <span>Qaybta: ${post.category}</span>
+            <strong>${post.author}</strong>  <span>Qaybta: ${post.category}</span>
           </div>
         </div>
         <h3 class="font-serif" style="font-size: 1.3rem; margin-bottom: 0.5rem;">${post.title}</h3>
@@ -908,7 +906,7 @@ function renderForumPosts() {
         <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
           <div>${post.tags.map(t => `<span style="color: var(--gold-primary); margin-right: 0.5rem;">${t}</span>`).join('')}</div>
           <div>
-            <button class="pill-btn" onclick="this.innerText = 'â¤ï¸ ' + (${post.likes} + 1)"><i class="fa-regular fa-heart"></i> ${post.likes}</button>
+            <button class="pill-btn" onclick="this.innerText = ' ' + (${post.likes} + 1)"><i class="fa-regular fa-heart"></i> ${post.likes}</button>
             <span style="margin-left: 0.75rem; color: var(--text-muted);"><i class="fa-regular fa-comment"></i> ${post.answersCount} jawaabood</span>
           </div>
         </div>
@@ -924,7 +922,7 @@ function renderBlogPosts() {
       <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
         <img src="${post.image}" style="width: 100%; height: 200px; object-fit: cover;">
         <div style="padding: 1.5rem;">
-          <span style="font-size: 0.75rem; color: var(--gold-primary); font-weight: 700; text-transform: uppercase;">${post.category} â€¢ ${post.readTime}</span>
+          <span style="font-size: 0.75rem; color: var(--gold-primary); font-weight: 700; text-transform: uppercase;">${post.category}  ${post.readTime}</span>
           <h3 class="font-serif" style="font-size: 1.3rem; margin: 0.5rem 0;">${post.title}</h3>
           <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">${post.excerpt}</p>
           <button class="btn btn-outline btn-sm">Akhriso Maqaalka Dhammaantiis</button>
@@ -960,12 +958,12 @@ async function processFinalOrder() {
     const order = await createOrder('evc');
     const orderNum = order?.order_number || 'ERAV-' + Math.floor(10000 + Math.random() * 90000);
     if (typeof showAuthToast === 'function') {
-      showAuthToast(`ðŸŽ‰ Dalabkaaga Waa La Guddoomay! Nambarka: #${orderNum}`);
+      showAuthToast(` Dalabkaaga Waa La Guddoomay! Nambarka: #${orderNum}`);
     } else {
-      alert(`ðŸŽ‰ Dalabkaaga Waa La Guddoomay! Nambarka raadraaca waa #${orderNum}. Mahadsanid!`);
+      alert(` Dalabkaaga Waa La Guddoomay! Nambarka raadraaca waa #${orderNum}. Mahadsanid!`);
     }
   } else {
-    alert('ðŸŽ‰ Dalabkaaga Waa La Guddoomay! Nambarka raadraaca waa #ERAV-84920. Mahadsanid!');
+    alert(' Dalabkaaga Waa La Guddoomay! Nambarka raadraaca waa #ERAV-84920. Mahadsanid!');
   }
   state.cart = [];
   renderCart();
@@ -1045,7 +1043,7 @@ function logSkinEntryWithSync() {
   
   if (typeof saveSkinLogToDB === 'function') saveSkinLogToDB(entry);
   if (typeof showAuthToast === 'function') {
-    showAuthToast('âœ… Horumarka maqaarkaaga waa la kaydiyay!');
+    showAuthToast(' Horumarka maqaarkaaga waa la kaydiyay!');
   } else {
     alert('Horumarka maqaarkaaga waa la kaydiyay!');
   }
