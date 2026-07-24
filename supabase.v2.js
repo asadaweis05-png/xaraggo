@@ -1,9 +1,9 @@
 /* ==========================================================================
-   BILIC - Supabase Integration Layer
+   ERAV - Supabase Integration Layer
    Connects to Supabase for Auth, Products, Cart, Wishlist, Orders, Profiles
    ========================================================================== */
 
-// ── Supabase Configuration ──────────────────────────────────────────────────
+// â”€â”€ Supabase Configuration â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SUPABASE_URL = 'https://zhsyovdebvhrannbgqpg.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpoc3lvdmRlYnZocmFubmJncXBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ2NzE5MDcsImV4cCI6MjEwMDI0NzkwN30.e_AIOO-WOpLfv0fTU2alwuwiPI-lgbHYXYWUxfZKNUs';
 
@@ -12,14 +12,14 @@ let supabaseClient = null;
 function initSupabase() {
   if (window.supabase && window.supabase.createClient) {
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log('✅ Supabase client initialized');
+    console.log('âœ… Supabase client initialized');
     return true;
   }
-  console.warn('⚠️ Supabase SDK not loaded yet');
+  console.warn('âš ï¸ Supabase SDK not loaded yet');
   return false;
 }
 
-// ── Helper: REST API fetch wrapper ──────────────────────────────────────────
+// â”€â”€ Helper: REST API fetch wrapper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function supabaseRest(table, { method = 'GET', body = null, query = '', headers = {} } = {}) {
   const url = `${SUPABASE_URL}/rest/v1/${table}${query}`;
   const token = supabaseClient ? (await supabaseClient.auth.getSession())?.data?.session?.access_token : null;
@@ -47,9 +47,9 @@ async function supabaseRest(table, { method = 'GET', body = null, query = '', he
 }
 
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // AUTHENTICATION
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function supaSignUp(email, password, fullName) {
   if (!supabaseClient) return { error: { message: 'Supabase not initialized' } };
@@ -107,7 +107,7 @@ async function supaGetCurrentUser() {
   return user;
 }
 
-// ── Auth State Listener ─────────────────────────────────────────────────────
+// â”€â”€ Auth State Listener â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function setupAuthListener() {
   if (!supabaseClient) return;
@@ -129,9 +129,9 @@ function setupAuthListener() {
 }
 
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // USER PROFILE
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function loadUserProfile(userId) {
   const rows = await supabaseRest('profiles', {
@@ -159,9 +159,9 @@ async function updateUserProfile(updates) {
 }
 
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PRODUCTS (Read from Supabase if table exists, fallback to local)
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function loadProductsFromDB() {
   try {
@@ -185,13 +185,13 @@ async function loadProductsFromDB() {
           desc: row.description || ''
         });
       });
-      console.log(`✅ ${products.length} products loaded from Supabase`);
+      console.log(`âœ… ${products.length} products loaded from Supabase`);
       renderBestSellers();
       renderShopCatalog();
       return true;
     }
   } catch (e) {
-    console.log('ℹ️ Products table not found, using local data');
+    console.log('â„¹ï¸ Products table not found, using local data');
   }
   return false;
 }
@@ -219,13 +219,13 @@ async function seedProductsToDB() {
   for (const p of products) {
     await saveProductToDB(p);
   }
-  console.log('✅ Products seeded to Supabase');
+  console.log('âœ… Products seeded to Supabase');
 }
 
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // CART (Persisted to Supabase)
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function loadCartFromDB() {
   if (!state.authUser) return;
@@ -247,7 +247,7 @@ async function loadCartFromDB() {
       renderCart();
     }
   } catch (e) {
-    console.log('ℹ️ Cart table not available');
+    console.log('â„¹ï¸ Cart table not available');
   }
 }
 
@@ -280,14 +280,14 @@ async function syncCartToDB() {
       });
     }
   } catch (e) {
-    console.log('ℹ️ Cart sync skipped');
+    console.log('â„¹ï¸ Cart sync skipped');
   }
 }
 
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // WISHLIST (Persisted to Supabase)
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function loadWishlistFromDB() {
   if (!state.authUser) return;
@@ -305,7 +305,7 @@ async function loadWishlistFromDB() {
       renderWishlist();
     }
   } catch (e) {
-    console.log('ℹ️ Wishlist table not available');
+    console.log('â„¹ï¸ Wishlist table not available');
   }
 }
 
@@ -331,20 +331,20 @@ async function syncWishlistToDB() {
       });
     }
   } catch (e) {
-    console.log('ℹ️ Wishlist sync skipped');
+    console.log('â„¹ï¸ Wishlist sync skipped');
   }
 }
 
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // ORDERS
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function createOrder(paymentMethod) {
   if (!state.authUser) return null;
 
   const subtotal = state.cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-  const orderNumber = 'BILIC-' + Math.floor(10000 + Math.random() * 90000);
+  const orderNumber = 'ERAV-' + Math.floor(10000 + Math.random() * 90000);
 
   try {
     const order = await supabaseRest('orders', {
@@ -367,7 +367,7 @@ async function createOrder(paymentMethod) {
 
     return order ? order[0] : { order_number: orderNumber };
   } catch (e) {
-    console.log('ℹ️ Orders table not available, processing locally');
+    console.log('â„¹ï¸ Orders table not available, processing locally');
     return { order_number: orderNumber };
   }
 }
@@ -386,9 +386,9 @@ async function loadUserOrders() {
 }
 
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SKIN TRACKER (Persisted)
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function saveSkinLogToDB(logEntry) {
   if (!state.authUser) return;
@@ -406,7 +406,7 @@ async function saveSkinLogToDB(logEntry) {
       }
     });
   } catch (e) {
-    console.log('ℹ️ Skin logs table not available');
+    console.log('â„¹ï¸ Skin logs table not available');
   }
 }
 
@@ -429,14 +429,14 @@ async function loadSkinLogsFromDB() {
       renderSkinLogHistory();
     }
   } catch (e) {
-    console.log('ℹ️ Skin logs not available');
+    console.log('â„¹ï¸ Skin logs not available');
   }
 }
 
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // REVIEWS
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function submitReview(productId, rating, comment) {
   if (!state.authUser) {
@@ -455,9 +455,9 @@ async function submitReview(productId, rating, comment) {
         author_name: state.user.name || 'Macmiil'
       }
     });
-    showAuthToast('✅ Faallodaada waa la diiwaan geliyay!');
+    showAuthToast('âœ… Faallodaada waa la diiwaan geliyay!');
   } catch (e) {
-    console.log('ℹ️ Reviews table not available');
+    console.log('â„¹ï¸ Reviews table not available');
   }
 }
 
@@ -473,9 +473,9 @@ async function loadProductReviews(productId) {
 }
 
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // UI HELPERS
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function updateAuthUI() {
   const userBtn = document.querySelector('[onclick="navigateTo(\'dashboard\')"]');
@@ -536,9 +536,9 @@ function showAuthToast(message) {
 }
 
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // AUTH FORM HANDLERS
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function handleSignUp(e) {
   e.preventDefault();
@@ -549,15 +549,15 @@ async function handleSignUp(e) {
   const confirmPassword = form.querySelector('#signup-confirm-password').value;
 
   if (!name || !email || !password) {
-    showAuthToast('⚠️ Fadlan buuxi dhammaan meelaha.');
+    showAuthToast('âš ï¸ Fadlan buuxi dhammaan meelaha.');
     return;
   }
   if (password !== confirmPassword) {
-    showAuthToast('⚠️ Furaha sirta ahi isma mid ahayn.');
+    showAuthToast('âš ï¸ Furaha sirta ahi isma mid ahayn.');
     return;
   }
   if (password.length < 6) {
-    showAuthToast('⚠️ Furaha sirta ahi waa inuu ugu yaraan 6 xaraf ahaadaa.');
+    showAuthToast('âš ï¸ Furaha sirta ahi waa inuu ugu yaraan 6 xaraf ahaadaa.');
     return;
   }
 
@@ -568,15 +568,15 @@ async function handleSignUp(e) {
   const { data, error } = await supaSignUp(email, password, name);
 
   if (error) {
-    showAuthToast(`❌ ${error.message}`);
+    showAuthToast(`âŒ ${error.message}`);
     submitBtn.disabled = false;
-    submitBtn.innerHTML = '✨ Samee Koontada';
+    submitBtn.innerHTML = 'âœ¨ Samee Koontada';
     return;
   }
 
-  showAuthToast('✅ Koontadaada waa la sameeyay! Fadlan hubi emailkaaga.');
+  showAuthToast('âœ… Koontadaada waa la sameeyay! Fadlan hubi emailkaaga.');
   submitBtn.disabled = false;
-  submitBtn.innerHTML = '✨ Samee Koontada';
+  submitBtn.innerHTML = 'âœ¨ Samee Koontada';
 
   // Switch to login view
   setTimeout(() => switchAuthTab('login'), 1500);
@@ -589,7 +589,7 @@ async function handleLogin(e) {
   const password = form.querySelector('#login-password').value;
 
   if (!email || !password) {
-    showAuthToast('⚠️ Fadlan geli emailka iyo furaha sirta.');
+    showAuthToast('âš ï¸ Fadlan geli emailka iyo furaha sirta.');
     return;
   }
 
@@ -600,15 +600,15 @@ async function handleLogin(e) {
   const { data, error } = await supaLogin(email, password);
 
   if (error) {
-    showAuthToast(`❌ ${error.message}`);
+    showAuthToast(`âŒ ${error.message}`);
     submitBtn.disabled = false;
-    submitBtn.innerHTML = '🔐 Gal Koontadaada';
+    submitBtn.innerHTML = 'ðŸ” Gal Koontadaada';
     return;
   }
 
-  showAuthToast(`✅ Ku soo dhawoow, ${data.user.user_metadata?.full_name || email.split('@')[0]}!`);
+  showAuthToast(`âœ… Ku soo dhawoow, ${data.user.user_metadata?.full_name || email.split('@')[0]}!`);
   submitBtn.disabled = false;
-  submitBtn.innerHTML = '🔐 Gal Koontadaada';
+  submitBtn.innerHTML = 'ðŸ” Gal Koontadaada';
 
   navigateTo('home');
 }
@@ -618,7 +618,7 @@ async function handleForgotPassword(e) {
   const email = e.target.querySelector('#reset-email').value.trim();
 
   if (!email) {
-    showAuthToast('⚠️ Fadlan geli emailka.');
+    showAuthToast('âš ï¸ Fadlan geli emailka.');
     return;
   }
 
@@ -629,13 +629,13 @@ async function handleForgotPassword(e) {
   const { error } = await supaResetPassword(email);
 
   if (error) {
-    showAuthToast(`❌ ${error.message}`);
+    showAuthToast(`âŒ ${error.message}`);
   } else {
-    showAuthToast('✅ Link cusub ayaa loo diray emailkaaga!');
+    showAuthToast('âœ… Link cusub ayaa loo diray emailkaaga!');
   }
 
   submitBtn.disabled = false;
-  submitBtn.innerHTML = '📧 Dir Linkka Cusub';
+  submitBtn.innerHTML = 'ðŸ“§ Dir Linkka Cusub';
 }
 
 function switchAuthTab(tab) {
@@ -649,9 +649,9 @@ function switchAuthTab(tab) {
 }
 
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // INITIALIZATION
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function initSupabaseApp() {
   // Wait for SDK to load
@@ -662,8 +662,8 @@ async function initSupabaseApp() {
   }
 
   if (!supabaseClient) {
-    console.warn('⚠️ Supabase SDK failed to load. Running in offline mode.');
-    showAuthToast('⚠️ Database connection: Offline mode');
+    console.warn('âš ï¸ Supabase SDK failed to load. Running in offline mode.');
+    showAuthToast('âš ï¸ Database connection: Offline mode');
     return;
   }
 
@@ -679,14 +679,14 @@ async function initSupabaseApp() {
     await loadWishlistFromDB();
     await loadSkinLogsFromDB();
     updateAuthUI();
-    console.log('✅ Existing session restored for:', user.email);
+    console.log('âœ… Existing session restored for:', user.email);
   }
 
   // Try loading products from DB (fallback to local)
   await loadProductsFromDB();
 
   // Show connection status
-  showAuthToast('✅ Supabase waa la xiriray!');
+  showAuthToast('âœ… Supabase waa la xiriray!');
 }
 
 // Auto-init when DOM is ready

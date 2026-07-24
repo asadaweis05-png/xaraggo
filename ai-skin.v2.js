@@ -1,19 +1,19 @@
 /* ==========================================================================
-   BILIC – AI Skin Analysis Module (Frontend)
+   ERAV â€“ AI Skin Analysis Module (Frontend)
    Calls Supabase Edge Function (never exposes API key)
    ========================================================================== */
 
-// ── Supabase Edge Function URL ──────────────────────────────────────────────
+// â”€â”€ Supabase Edge Function URL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SKIN_ANALYSIS_FUNCTION_URL =
   "https://zhsyovdebvhrannbgqpg.supabase.co/functions/v1/skin-analysis";
 
-// ── Camera State ────────────────────────────────────────────────────────────
+// â”€â”€ Camera State â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let cameraStream = null;
 let capturedImageBase64 = null;
 
-// ══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SCAN TAB SWITCH
-// ══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function switchScanTab(tab) {
   document.querySelectorAll(".scan-tab-content").forEach((el) => (el.style.display = "none"));
   document.querySelectorAll(".scan-tab-btn").forEach((btn) => {
@@ -35,9 +35,9 @@ function switchScanTab(tab) {
   if (tab !== "camera") resetImageUpload();
 }
 
-// ══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // IMAGE UPLOAD FUNCTIONS
-// ══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function handleSkinImageUpload(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -87,12 +87,12 @@ function resetImageUpload() {
   if (scanLine) scanLine.style.display = "none";
 }
 
-// ══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // CAPTURE & SEND TO BACKEND
-// ══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function captureAndAnalyze() {
   if (!capturedImageBase64) {
-    showAISkinError("⚠️ Fadlan soo dhig sawir marka hore.");
+    showAISkinError("âš ï¸ Fadlan soo dhig sawir marka hore.");
     return;
   }
 
@@ -106,15 +106,15 @@ async function captureAndAnalyze() {
 async function runAISkinAnalysisText() {
   const prompt = document.getElementById("ai-skin-prompt").value.trim();
   if (!prompt) {
-    showAISkinError("⚠️ Fadlan sharax dhibaatada maqaarkaaga.");
+    showAISkinError("âš ï¸ Fadlan sharax dhibaatada maqaarkaaga.");
     return;
   }
   await runGeminiAnalysis("text", null, prompt);
 }
 
-// ══════════════════════════════════════════════════════════════════════════
-// MAIN ANALYSIS FUNCTION — calls Supabase Edge Function
-// ══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// MAIN ANALYSIS FUNCTION â€” calls Supabase Edge Function
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function runGeminiAnalysis(mode, imageBase64, textPrompt) {
   const resultDiv = document.getElementById("ai-skin-result");
   resultDiv.style.display = "block";
@@ -126,7 +126,7 @@ async function runGeminiAnalysis(mode, imageBase64, textPrompt) {
       <div class="ai-scan-spinner">
         <i class="fa-solid fa-robot" style="font-size: 2.5rem; color: var(--gold-primary); animation: pulse 1.5s infinite;"></i>
       </div>
-      <h3 class="font-serif" style="font-size: 1.4rem; margin: 1rem 0 0.5rem;">🤖 AI-du waxay baarayaan maqaarkaaga...</h3>
+      <h3 class="font-serif" style="font-size: 1.4rem; margin: 1rem 0 0.5rem;">ðŸ¤– AI-du waxay baarayaan maqaarkaaga...</h3>
       <p style="color: var(--text-secondary); font-size: 0.9rem;">Gemini Vision waxay falanqaynaysaa ${mode === 'image' ? 'sawirkaaga' : 'faahfaahintaada'}.<br>Fadlan daqiiqad yar sug.</p>
       <div style="display: flex; justify-content: center; gap: 6px; margin-top: 1.5rem;">
         ${[...Array(4)].map((_, i) => `<div style="width: 8px; height: 8px; background: var(--gold-primary); border-radius: 50%; animation: bounce 1.2s ${i * 0.2}s infinite;"></div>`).join("")}
@@ -167,13 +167,13 @@ async function runGeminiAnalysis(mode, imageBase64, textPrompt) {
     }
 
   } catch (err) {
-    showAISkinError(`❌ Cilad dhacday: ${err.message}<br><small style="opacity:0.7">Xaqiiji inaad internet-ka ku xidantahay oo mar kale isku day.</small>`);
+    showAISkinError(`âŒ Cilad dhacday: ${err.message}<br><small style="opacity:0.7">Xaqiiji inaad internet-ka ku xidantahay oo mar kale isku day.</small>`);
   }
 }
 
-// ══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // DISPLAY RESULTS
-// ══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function displaySkinAnalysisResults(data, imageBase64) {
   const scores = data.astaamaha || { finan: 0, dufan: 0, qoyaan: 5, xasaasiyad: 0 };
 
@@ -194,7 +194,7 @@ function displaySkinAnalysisResults(data, imageBase64) {
       <div style="margin-bottom: 1rem;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
           <span style="font-size: 0.88rem; font-weight: 600;">${icon} ${label}</span>
-          <span style="font-size: 0.8rem; font-weight: 700; color: ${color};">${score}/10 · ${level}</span>
+          <span style="font-size: 0.8rem; font-weight: 700; color: ${color};">${score}/10 Â· ${level}</span>
         </div>
         <div style="background: var(--bg-tertiary); border-radius: 8px; height: 10px; overflow: hidden;">
           <div style="width: 0%; background: linear-gradient(90deg, ${color}88, ${color}); height: 100%; border-radius: 8px; transition: width 1.2s ease; width: ${pct}%;"></div>
@@ -210,12 +210,12 @@ function displaySkinAnalysisResults(data, imageBase64) {
   document.getElementById("ai-skin-result").innerHTML = `
     <div style="animation: fadeIn 0.5s ease;">
 
-      <!-- ── HEADER ─────────────────────────────── -->
+      <!-- â”€â”€ HEADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
       <div style="background: var(--bg-card); border: 1.5px solid var(--gold-primary); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 1.25rem; box-shadow: var(--shadow-md);">
         <div style="display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;">
           ${thumbSrc ? `<img src="${thumbSrc}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold-primary); box-shadow: 0 4px 16px rgba(197,160,89,0.3);">` : `<div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-primary), var(--emerald-dark)); display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-robot" style="font-size: 2rem; color: #FFF;"></i></div>`}
           <div style="flex: 1;">
-            <div style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold-primary); margin-bottom: 0.4rem;">Natiijooyinka AI · Bilic Skin Scan</div>
+            <div style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold-primary); margin-bottom: 0.4rem;">Natiijooyinka AI Â· Erav Skin Scan</div>
             <h3 class="font-serif" style="font-size: 1.7rem; margin-bottom: 0.5rem; color: var(--emerald-dark);">Nooca Maqaarkaaga</h3>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
               <span style="background: ${colors.badge}; color: #FFF; padding: 5px 14px; border-radius: 20px; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.02em;">${data.noocaMaqaarka}</span>
@@ -225,16 +225,16 @@ function displaySkinAnalysisResults(data, imageBase64) {
         </div>
       </div>
 
-      <!-- ── SCORE BARS ─────────────────────────── -->
+      <!-- â”€â”€ SCORE BARS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
       <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.25rem; box-shadow: var(--shadow-sm);">
-        <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--emerald-dark); margin-bottom: 1.25rem;">📊 Astaamaha Maqaarkaaga</h4>
-        ${scoreBar("🔴", "Finan (Acne)", scores.finan, "#E53935")}
-        ${scoreBar("🟡", "Dufan (Oiliness)", scores.dufan, "#FB8C00")}
-        ${scoreBar("🔵", "Qoyaan (Hydration)", scores.qoyaan, "#1E88E5")}
-        ${scoreBar("🟣", "Xasaasiyad (Sensitivity)", scores.xasaasiyad, "#8E24AA")}
+        <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--emerald-dark); margin-bottom: 1.25rem;">ðŸ“Š Astaamaha Maqaarkaaga</h4>
+        ${scoreBar("ðŸ”´", "Finan (Acne)", scores.finan, "#E53935")}
+        ${scoreBar("ðŸŸ¡", "Dufan (Oiliness)", scores.dufan, "#FB8C00")}
+        ${scoreBar("ðŸ”µ", "Qoyaan (Hydration)", scores.qoyaan, "#1E88E5")}
+        ${scoreBar("ðŸŸ£", "Xasaasiyad (Sensitivity)", scores.xasaasiyad, "#8E24AA")}
       </div>
 
-      <!-- ── ISSUES + INGREDIENTS ───────────────── -->
+      <!-- â”€â”€ ISSUES + INGREDIENTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
         <div style="background: #fff5f5; border: 1px solid #fca5a5; border-radius: var(--radius-md); padding: 1.25rem;">
           <h4 style="font-size: 0.9rem; color: #dc2626; margin-bottom: 0.75rem; font-weight: 700;">
@@ -249,16 +249,16 @@ function displaySkinAnalysisResults(data, imageBase64) {
             <i class="fa-solid fa-flask"></i> Qanjiyadaha Fiican
           </h4>
           <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.82rem; line-height: 1.9;">
-            ${(data.qanjiyadaLaGaliyaa || []).map((q) => `<li><strong>${q.split(" - ")[0]}</strong>${q.includes(" - ") ? " — " + q.split(" - ")[1] : ""}</li>`).join("")}
+            ${(data.qanjiyadaLaGaliyaa || []).map((q) => `<li><strong>${q.split(" - ")[0]}</strong>${q.includes(" - ") ? " â€” " + q.split(" - ")[1] : ""}</li>`).join("")}
           </ul>
         </div>
       </div>
 
-      <!-- ── SOMALI TIPS ────────────────────────── -->
+      <!-- â”€â”€ SOMALI TIPS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
       ${data.talooyinkaSomaalida?.length ? `
       <div style="background: linear-gradient(135deg, rgba(13,40,24,0.05), rgba(197,160,89,0.08)); border: 1.5px solid var(--emerald-light); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.25rem;">
         <h4 style="font-size: 1rem; font-weight: 700; color: var(--emerald-dark); margin-bottom: 1rem;">
-          🌿 Talooyinka Bilic — Ku Saabsan Maqaarkaaga
+          ðŸŒ¿ Talooyinka Erav â€” Ku Saabsan Maqaarkaaga
         </h4>
         <div style="display: grid; gap: 0.6rem;">
           ${data.talooyinkaSomaalida.map((t, i) => `
@@ -271,11 +271,11 @@ function displaySkinAnalysisResults(data, imageBase64) {
       </div>
       ` : ""}
 
-      <!-- ── CREAMS TO LOOK FOR ─────────────────── -->
+      <!-- â”€â”€ CREAMS TO LOOK FOR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
       ${data.kiriimadaLaGaliyaa?.length ? `
       <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;">
         <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--emerald-dark); margin-bottom: 0.75rem;">
-          🧴 Kiriimadaha iyo Alaabta La Doorbidi Lahaa
+          ðŸ§´ Kiriimadaha iyo Alaabta La Doorbidi Lahaa
         </h4>
         <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
           ${data.kiriimadaLaGaliyaa.map((k) => `<span style="background: var(--bg-tertiary); border: 1px solid var(--border-color); padding: 5px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 500;">${k}</span>`).join("")}
@@ -283,7 +283,7 @@ function displaySkinAnalysisResults(data, imageBase64) {
       </div>
       ` : ""}
 
-      <!-- ── ROUTINES ────────────────────────────── -->
+      <!-- â”€â”€ ROUTINES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
         <div style="background: linear-gradient(180deg, #FFFBEB, var(--bg-card)); border: 1px solid #FDE68A; border-radius: var(--radius-md); padding: 1.25rem;">
           <h4 style="font-size: 0.9rem; margin-bottom: 1rem; font-weight: 700; color: #92400E;">
@@ -303,21 +303,21 @@ function displaySkinAnalysisResults(data, imageBase64) {
         </div>
       </div>
 
-      <!-- ── PRODUCT RECOMMENDATIONS (Placeholder) ─ -->
+      <!-- â”€â”€ PRODUCT RECOMMENDATIONS (Placeholder) â”€ -->
       <div style="background: linear-gradient(135deg, var(--emerald-dark), #1E5B3A); padding: 1.5rem; border-radius: var(--radius-lg); color: #FAF8F5; margin-bottom: 1rem; display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;">
         <div style="flex: 1;">
-          <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold-primary); margin-bottom: 0.4rem; font-weight: 700;">Alaabta Bilic</div>
+          <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold-primary); margin-bottom: 0.4rem; font-weight: 700;">Alaabta Erav</div>
           <h4 style="font-size: 1.1rem; margin-bottom: 0.4rem; font-family: var(--font-serif);">
             <i class="fa-solid fa-bag-shopping" style="color: var(--gold-primary);"></i> Alaabta Kuu Habboon
           </h4>
           <p style="font-size: 0.85rem; opacity: 0.85; margin: 0;">AI-du waxay u doortay alaab ku habboon <strong>${data.noocaMaqaarka}</strong>. Dukaankayaga ka fiiri alaabta ugu habboon maqaarkaaga.</p>
         </div>
         <button class="btn btn-gold" onclick="filterShopCategory('daryeelka-maqaarka'); navigateTo('shop');" style="white-space: nowrap;">
-          🛒 Eeg Dukaanka
+          ðŸ›’ Eeg Dukaanka
         </button>
       </div>
 
-      <!-- ── DISCLAIMER ──────────────────────────── -->
+      <!-- â”€â”€ DISCLAIMER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
       <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; padding-top: 1rem; border-top: 1px dashed var(--border-color); line-height: 1.6;">
         <i class="fa-solid fa-shield-halved" style="color: var(--gold-primary);"></i>
         <strong>Ogeysiis:</strong> ${data.faallo || "Talooyinkan waxaa loogu talagalay macluumaadka guud oo keliya."} Ma aha talo dhakhtar rasmi ah.
@@ -333,9 +333,9 @@ function displaySkinAnalysisResults(data, imageBase64) {
   `;
 }
 
-// ══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // ERROR DISPLAY
-// ══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function showAISkinError(message) {
   const resultDiv = document.getElementById("ai-skin-result");
   if (!resultDiv) return;

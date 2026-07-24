@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bilic – Quruxda iyo Labbiska Soomaaliyeed</title>
-  <meta name="description" content="Bilic waa xarun casri ah oo isu keenta daryeelka maqaarka, talooyinka AI, iyo labbis Soomaaliyeed oo tayo sare leh.">
+  <title>Erav - Quruxda iyo Labbiska Soomaaliyeed</title>
+  <meta name="description" content="Erav waa xarun casri ah oo isu keenta daryeelka maqaarka, talooyinka AI, iyo labbis Soomaaliyeed oo tayo sare leh.">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -15,14 +15,12 @@
   <div class="announcement-bar">
     <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
       <div class="announcement-ticker">
-        <i class="fa-solid fa-crown" style="color: var(--gold-primary);"></i>
-        <span>✨ Dhiibis Bilaash ah oo ku baahsan Soomaaliya & Bariga Afrika | Qurbo-joogta Waa Loo Dirayaa</span>
       </div>
       <div class="top-bar-controls">
         <select id="currency-select" class="pill-select" onchange="changeCurrency(this.value)">
           <option value="USD">USD ($)</option>
           <option value="SOS">SOS (Sh.So)</option>
-          <option value="EUR">EUR (€)</option>
+          <option value="EUR">EUR (â‚¬)</option>
         </select>
         <button class="pill-btn" onclick="toggleTheme()">
           <i class="fa-solid fa-moon" id="theme-icon"></i>
@@ -35,9 +33,9 @@
   <header class="main-header">
     <div class="container nav-container">
       <a href="#" class="logo-brand" onclick="navigateTo('home')">
-        <div class="logo-symbol">B</div>
+        <div class="logo-symbol">E</div>
         <div>
-          <span class="logo-text">BILIC</span>
+          <span class="logo-text">ERAV</span>
           <span class="logo-tag">QURUXDA IYO LABBISKA</span>
         </div>
       </a>
@@ -88,7 +86,7 @@
       <div style="background: linear-gradient(135deg, var(--emerald-dark) 0%, #144229 100%); color: #FAF8F5; padding: 3.5rem 0 3rem; text-align: center; border-bottom: 3px solid var(--gold-primary);">
         <div class="container" style="max-width: 800px;">
           <span style="background: rgba(197, 160, 89, 0.2); color: var(--gold-primary); border: 1px solid var(--gold-primary); padding: 5px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; display: inline-block; margin-bottom: 1rem;">
-            ✨ Bilic — AI Beauty & Modest Fashion
+            âœ¨ Erav â€” AI Beauty & Modest Fashion
           </span>
           <h1 class="font-serif" style="font-size: 2.8rem; margin-bottom: 0.75rem; color: #FFF;">
             Falanqaynta Maqaarka & <span style="color: var(--gold-primary);">AI Vision</span>
@@ -111,14 +109,14 @@
               </div>
               <span style="font-size: 0.75rem; font-weight: 700; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 0.1em;">AI Vision Technology</span>
               <h2 class="font-serif" style="font-size: 1.8rem; margin: 0.4rem 0 0.75rem; color: var(--emerald-dark);">
-                📸 Sawirka Wejiga (AI Scan)
+                ðŸ“¸ Sawirka Wejiga (AI Scan)
               </h2>
               <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.75rem;">
                 Kamaradda wejigaaga ku aad! Gemini AI Vision waxay si sax ah u baaraysaa finanka, dufanka, qallaylka & dhibcaha madow.
               </p>
             </div>
             <button class="btn btn-gold" style="width: 100%; padding: 0.95rem; font-size: 1rem; border-radius: var(--radius-md);" onclick="navigateTo('ai-skin-advisor');">
-              ✨ Bilow Sawirka Wejiga (Upload)
+              âœ¨ Bilow Sawirka Wejiga (Upload)
             </button>
           </div>
 
@@ -130,14 +128,14 @@
               </div>
               <span style="font-size: 0.75rem; font-weight: 700; color: var(--emerald-dark); text-transform: uppercase; letter-spacing: 0.1em;">6 Suaalood oo Fudud</span>
               <h2 class="font-serif" style="font-size: 1.8rem; margin: 0.4rem 0 0.75rem; color: var(--emerald-dark);">
-                📋 Imtixaanka Maqaarka
+                ðŸ“‹ Imtixaanka Maqaarka
               </h2>
               <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.75rem;">
                 Ka jawaab 6 suaalood oo ku saabsan maqaarkaaga si aad u hesho jadwalka subaxda & habeenka iyo talooyinka ku habboon.
               </p>
             </div>
             <button class="btn btn-primary" style="width: 100%; padding: 0.95rem; font-size: 1rem; border-radius: var(--radius-md);" onclick="navigateTo('skin-quiz');">
-              📋 Bilow Imtixaanka (Quiz)
+              ðŸ“‹ Bilow Imtixaanka (Quiz)
             </button>
           </div>
 
@@ -152,7 +150,7 @@
       <div class="section container">
         <div class="section-header">
           <span class="section-subtitle">Dukaanka Labbiska & Daryeelka</span>
-          <h2 class="section-title">Alaabta Bilic</h2>
+          <h2 class="section-title">Alaabta Erav</h2>
         </div>
 
         <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2rem; justify-content: space-between; align-items: center;">
@@ -205,10 +203,10 @@
           <!-- Mode Tabs -->
           <div style="display: flex; gap: 0.5rem; border-bottom: 2px solid var(--border-color); margin-bottom: 1.75rem;">
             <button class="scan-tab-btn active" data-scan-tab="camera" onclick="switchScanTab('camera')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-primary); border-bottom: 3px solid var(--gold-primary); transition: all 0.3s ease;">
-              📸 Sawirka Wejiga (Upload)
+              ðŸ“¸ Sawirka Wejiga (Upload)
             </button>
             <button class="scan-tab-btn" data-scan-tab="text" onclick="switchScanTab('text')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-muted); border-bottom: 3px solid transparent; transition: all 0.3s ease;">
-              ✍️ Sharaxaad Qoraal ah
+              âœï¸ Sharaxaad Qoraal ah
             </button>
           </div>
 
@@ -238,7 +236,7 @@
             <!-- Upload Actions -->
             <div style="display: flex; gap: 1rem; justify-content: center;">
               <button id="btn-capture" class="btn btn-gold" onclick="captureAndAnalyze()" style="display: none; font-size: 1rem; padding: 0.85rem 1.75rem;">
-                ✨ Falanqee Sawirka (AI Vision)
+                âœ¨ Falanqee Sawirka (AI Vision)
               </button>
               <button id="btn-stop-camera" class="btn btn-outline" onclick="resetImageUpload()" style="display: none;">
                 <i class="fa-solid fa-xmark"></i> Tirtir Sawirka
@@ -256,7 +254,7 @@
               <textarea id="ai-skin-prompt" rows="4" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); outline: none; box-sizing: border-box;" placeholder="Tusaale: Waxaan leeyahay finan badan oo ku yaal dhabannada, dufan badan sanka, iyo dhibco madow ka dhashey finankii hore..."></textarea>
             </div>
             <button class="btn btn-gold" style="width: 100%; padding: 0.9rem;" onclick="runAISkinAnalysisText()">
-              ➡️ Falanqee Sharaxaadda (Gemini AI)
+              âž¡ï¸ Falanqee Sharaxaadda (Gemini AI)
             </button>
           </div>
 
@@ -373,7 +371,7 @@
           </div>
 
           <button class="btn btn-gold" style="width: 100%;" onclick="runAIFashionStylist()">
-            ➡️ Bilow Lataliyaha Labbiska
+            âž¡ï¸ Bilow Lataliyaha Labbiska
           </button>
 
           <div id="ai-stylist-result" style="display: none; margin-top: 2rem; padding-top: 2rem; border-top: 1px dashed var(--border-color);">
@@ -391,29 +389,29 @@
           <!-- Auth Brand Header -->
           <div style="text-align: center; margin-bottom: 2rem;">
             <div class="logo-symbol" style="width: 64px; height: 64px; font-size: 2rem; margin: 0 auto 1rem;">B</div>
-            <h2 class="font-serif" style="font-size: 2rem; color: var(--emerald-dark);">Ku Soo Dhawoow Bilic</h2>
+            <h2 class="font-serif" style="font-size: 2rem; color: var(--emerald-dark);">Ku Soo Dhawoow Erav</h2>
             <p style="color: var(--text-secondary); font-size: 0.9rem;">Gal koontadaada ama samee koonto cusub.</p>
           </div>
 
           <!-- Auth Tab Navigation -->
           <div style="display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 2rem;">
-            <button class="auth-tab-btn active" data-auth-tab="login" onclick="switchAuthTab('login')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-primary); border-bottom: 3px solid var(--gold-primary); transition: all 0.3s ease;">🔐 Galitaanka</button>
-            <button class="auth-tab-btn" data-auth-tab="signup" onclick="switchAuthTab('signup')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-muted); border-bottom: 3px solid transparent; transition: all 0.3s ease;">✨ Isdiiwaangeli</button>
-            <button class="auth-tab-btn" data-auth-tab="reset" onclick="switchAuthTab('reset')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-muted); border-bottom: 3px solid transparent; transition: all 0.3s ease;">🔑 Furaha Cusub</button>
+            <button class="auth-tab-btn active" data-auth-tab="login" onclick="switchAuthTab('login')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-primary); border-bottom: 3px solid var(--gold-primary); transition: all 0.3s ease;">ðŸ” Galitaanka</button>
+            <button class="auth-tab-btn" data-auth-tab="signup" onclick="switchAuthTab('signup')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-muted); border-bottom: 3px solid transparent; transition: all 0.3s ease;">âœ¨ Isdiiwaangeli</button>
+            <button class="auth-tab-btn" data-auth-tab="reset" onclick="switchAuthTab('reset')" style="flex: 1; padding: 0.85rem; background: none; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: var(--text-muted); border-bottom: 3px solid transparent; transition: all 0.3s ease;">ðŸ”‘ Furaha Cusub</button>
           </div>
 
           <!-- LOGIN FORM -->
           <div id="auth-login" class="auth-tab-content" style="display: block;">
             <form onsubmit="handleLogin(event)" style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-md);">
               <div style="margin-bottom: 1.25rem;">
-                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">📧 Emailka</label>
+                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">ðŸ“§ Emailka</label>
                 <input type="email" id="login-email" required placeholder="magacaaga@email.com" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; box-sizing: border-box;">
               </div>
               <div style="margin-bottom: 1.5rem;">
-                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">🔒 Furaha Sirta</label>
+                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">ðŸ”’ Furaha Sirta</label>
                 <input type="password" id="login-password" required placeholder="Furaha sirta ah" minlength="6" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; box-sizing: border-box;">
               </div>
-              <button type="submit" class="btn btn-gold" style="width: 100%; padding: 0.95rem; font-size: 1rem;">🔐 Gal Koontadaada</button>
+              <button type="submit" class="btn btn-gold" style="width: 100%; padding: 0.95rem; font-size: 1rem;">ðŸ” Gal Koontadaada</button>
               <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
                 Ma lihid koonto? <a href="#" onclick="switchAuthTab('signup'); return false;" style="color: var(--gold-primary); font-weight: 600; text-decoration: underline;">Halkan ka samee</a>
               </p>
@@ -424,22 +422,22 @@
           <div id="auth-signup" class="auth-tab-content" style="display: none;">
             <form onsubmit="handleSignUp(event)" style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-md);">
               <div style="margin-bottom: 1.25rem;">
-                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">👤 Magacaaga Buuxa</label>
+                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">ðŸ‘¤ Magacaaga Buuxa</label>
                 <input type="text" id="signup-name" required placeholder="Tusaale: Aamiina Xasan" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; box-sizing: border-box;">
               </div>
               <div style="margin-bottom: 1.25rem;">
-                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">📧 Emailka</label>
+                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">ðŸ“§ Emailka</label>
                 <input type="email" id="signup-email" required placeholder="magacaaga@email.com" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; box-sizing: border-box;">
               </div>
               <div style="margin-bottom: 1.25rem;">
-                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">🔒 Furaha Sirta</label>
+                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">ðŸ”’ Furaha Sirta</label>
                 <input type="password" id="signup-password" required placeholder="Ugu yaraan 6 xaraf" minlength="6" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; box-sizing: border-box;">
               </div>
               <div style="margin-bottom: 1.5rem;">
-                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">🔒 Xaqiiji Furaha Sirta</label>
+                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">ðŸ”’ Xaqiiji Furaha Sirta</label>
                 <input type="password" id="signup-confirm-password" required placeholder="Mar labaad geli furaha" minlength="6" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; box-sizing: border-box;">
               </div>
-              <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.95rem; font-size: 1rem;">✨ Samee Koontada</button>
+              <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.95rem; font-size: 1rem;">âœ¨ Samee Koontada</button>
               <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
                 Horey u leedahay koonto? <a href="#" onclick="switchAuthTab('login'); return false;" style="color: var(--gold-primary); font-weight: 600; text-decoration: underline;">Halkan ka gal</a>
               </p>
@@ -454,12 +452,12 @@
                 <span>Link cusub ayaa loo diri doonaa emailkaaga si aad ugu beddesho furaha sirta.</span>
               </div>
               <div style="margin-bottom: 1.5rem;">
-                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">📧 Emailka Koontadaada</label>
+                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">ðŸ“§ Emailka Koontadaada</label>
                 <input type="email" id="reset-email" required placeholder="magacaaga@email.com" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; box-sizing: border-box;">
               </div>
-              <button type="submit" class="btn btn-gold" style="width: 100%; padding: 0.95rem; font-size: 1rem;">📧 Dir Linkka Cusub</button>
+              <button type="submit" class="btn btn-gold" style="width: 100%; padding: 0.95rem; font-size: 1rem;">ðŸ“§ Dir Linkka Cusub</button>
               <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
-                <a href="#" onclick="switchAuthTab('login'); return false;" style="color: var(--gold-primary); font-weight: 600; text-decoration: underline;">← Ku laabo Galitaanka</a>
+                <a href="#" onclick="switchAuthTab('login'); return false;" style="color: var(--gold-primary); font-weight: 600; text-decoration: underline;">â† Ku laabo Galitaanka</a>
               </p>
             </form>
           </div>
@@ -481,8 +479,8 @@
           <!-- Profile Card -->
           <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; text-align: center; box-shadow: var(--shadow-md);">
             <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-primary), var(--emerald-dark)); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 2rem; color: #FFF; font-weight: 700;" id="dash-avatar">A</div>
-            <h3 class="font-serif" style="font-size: 1.4rem; margin-bottom: 0.25rem;" id="dash-name">–</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;" id="dash-email">–</p>
+            <h3 class="font-serif" style="font-size: 1.4rem; margin-bottom: 0.25rem;" id="dash-name">â€“</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;" id="dash-email">â€“</p>
             <div style="background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); color: #121212; padding: 0.5rem 1rem; border-radius: var(--radius-md); font-weight: 700; font-size: 0.85rem; display: inline-block; margin-bottom: 1rem;" id="dash-vip">VIP</div>
             <div style="font-size: 0.85rem; color: var(--text-secondary);">
               <i class="fa-solid fa-coins" style="color: var(--gold-primary);"></i> <span id="dash-points">0</span> Dhibcood
@@ -573,7 +571,7 @@
           <span>Wadarta Guud:</span>
           <span id="cart-subtotal-price" style="color: var(--emerald-dark); font-size: 1.2rem;">$38</span>
         </div>
-        <button class="btn btn-gold" style="width: 100%;" onclick="navigateTo('checkout'); toggleDrawer('cart-drawer');">🛒 U Gudub Bixinta</button>
+        <button class="btn btn-gold" style="width: 100%;" onclick="navigateTo('checkout'); toggleDrawer('cart-drawer');">ðŸ›’ U Gudub Bixinta</button>
       </div>
     </div>
   </div>
@@ -586,17 +584,17 @@
           <div class="logo-brand" style="margin-bottom: 1rem;">
             <div class="logo-symbol" style="background: var(--gold-primary); color: #121212;">B</div>
             <div>
-              <span class="logo-text" style="color: #FFF;">Bilic</span>
+              <span class="logo-text" style="color: #FFF;">Erav</span>
             </div>
           </div>
           <p style="font-size: 0.95rem; color: #D5DFD9; line-height: 1.7; margin-bottom: 1rem;">
-            Bilic waa xarun casri ah oo isu keenta daryeelka maqaarka, talooyinka AI, iyo labbis Soomaaliyeed oo tayo sare leh. Waxaan hiigsanaynaa inaan bulshada Soomaaliyeed siino adeeg casri ah oo isku dara qurux, aqoon, iyo teknoolojiyad.
+            Erav waa xarun casri ah oo isu keenta daryeelka maqaarka, talooyinka AI, iyo labbis Soomaaliyeed oo tayo sare leh. Waxaan hiigsanaynaa inaan bulshada Soomaaliyeed siino adeeg casri ah oo isku dara qurux, aqoon, iyo teknoolojiyad.
           </p>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <p>© 2026 Bilic. Dhammaan xuquuqdu way dhowran tahay.</p>
+        <p>Â© 2026 Erav. Dhammaan xuquuqdu way dhowran tahay.</p>
       </div>
     </div>
   </footer>
@@ -608,7 +606,7 @@
         <div class="logo-brand">
           <div class="logo-symbol">B</div>
           <div>
-            <span class="logo-text">BILIC</span>
+            <span class="logo-text">ERAV</span>
             <span class="logo-tag">QURUXDA IYO LABBISKA</span>
           </div>
         </div>
@@ -617,8 +615,8 @@
       <div class="drawer-body" style="padding: 1rem 1.25rem;">
         <ul class="mobile-nav-list" style="list-style: none; margin: 0; padding: 0;">
           <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('home'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-house" style="color: var(--gold-primary);"></i> <span>Hoyga</span></a></li>
-          <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('ai-skin-advisor'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-image" style="color: var(--gold-primary);"></i> <span>📸 AI Face Scan (Sawir)</span></a></li>
-          <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('skin-quiz'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-clipboard-list" style="color: var(--gold-primary);"></i> <span>📋 Imtixaanka Maqaarka</span></a></li>
+          <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('ai-skin-advisor'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-image" style="color: var(--gold-primary);"></i> <span>ðŸ“¸ AI Face Scan (Sawir)</span></a></li>
+          <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('skin-quiz'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-clipboard-list" style="color: var(--gold-primary);"></i> <span>ðŸ“‹ Imtixaanka Maqaarka</span></a></li>
           <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('shop'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-bag-shopping" style="color: var(--gold-primary);"></i> <span>Dukaanka Labbiska & Daryeelka</span></a></li>
           <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('outfit-builder'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-shirt" style="color: var(--gold-primary);"></i> <span>Naqshadeeyaha Labbiska</span></a></li>
           <li style="margin-bottom: 0.5rem;"><a onclick="navigateTo('color-matcher'); toggleMobileMenu();" class="mobile-nav-item"><i class="fa-solid fa-palette" style="color: var(--gold-primary);"></i> <span>Isku-dheellitirka Midabbada</span></a></li>
@@ -655,8 +653,8 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js"></script>
-  <script src="ai-skin.js"></script>
-  <script src="supabase.js"></script>
+  <script src="app.v2.js"></script>
+  <script src="ai-skin.v2.js"></script>
+  <script src="supabase.v2.js"></script>
 </body>
 </html>
