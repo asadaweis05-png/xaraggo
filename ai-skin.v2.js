@@ -96,6 +96,12 @@ async function captureAndAnalyze() {
     return;
   }
 
+  // Require Email & Password login/signup before analyzing image
+  if (typeof state !== 'undefined' && !state.authUser) {
+    showAuthRequiredPrompt("Fadlan geli emailkaaga iyo furaha sirta ah (Gal Koontada ama Isdiiwaangeli) si AI-du ay u falanqeyso sawirkaaga uuna ugu kaydsamo koontadaada!");
+    return;
+  }
+
   // Optionally stop animation
   const scanLine = document.querySelector(".scan-line-anim");
   if (scanLine) scanLine.style.display = "none";
@@ -109,6 +115,13 @@ async function runAISkinAnalysisText() {
     showAISkinError(" Fadlan sharax dhibaatada maqaarkaaga.");
     return;
   }
+
+  // Require Email & Password login/signup before analyzing text
+  if (typeof state !== 'undefined' && !state.authUser) {
+    showAuthRequiredPrompt("Fadlan geli emailkaaga iyo furaha sirta ah (Gal Koontada ama Isdiiwaangeli) si aad u hesho falanqaynta AI-da!");
+    return;
+  }
+
   await runGeminiAnalysis("text", null, prompt);
 }
 
@@ -142,26 +155,20 @@ async function runGeminiAnalysis(mode, imageBase64, textPrompt) {
       if (data?.session?.access_token) authToken = data.session.access_token;
     }
 
-    let responseData;
-    try {
-      const res = await fetch(SKIN_ANALYSIS_FUNCTION_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-          apikey: SUPABASE_ANON_KEY,
-        },
-        body: JSON.stringify({ mode, imageBase64, textPrompt }),
-      });
-      const data = await res.json();
-      if (!res.ok || data.error) {
-        throw new Error(data.error || `Server error ${res.status}`);
-      }
-      responseData = data;
-    } catch (fetchErr) {
-      console.log("Using Smart Client-Side Vision/NLP Analysis Engine. Info:", fetchErr.message);
-      // Generate dynamic analysis based on actual image pixels or text prompt
-      responseData = await generateSmartSkinAnalysis(mode, imageBase64, textPrompt);
+    const res = await fetch(SKIN_ANALYSIS_FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+        apikey: SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({ mode, imageBase64, textPrompt }),
+    });
+
+    const responseData = await res.json();
+
+    if (!res.ok || responseData.error) {
+      throw new Error(responseData.error || `Cilad ka dhacday Server-ka AI (HTTP ${res.status})`);
     }
 
     displaySkinAnalysisResults(responseData, imageBase64);
@@ -173,7 +180,7 @@ async function runGeminiAnalysis(mode, imageBase64, textPrompt) {
     }
 
   } catch (err) {
-    showAISkinError(`Cilad dhacday: ${err.message}<br><small style="opacity:0.7">Fadlan mar kale isku day.</small>`);
+    showAISkinError(`Cilad ayaa ka dhacday Xiriirka AI-da: ${err.message}<br><small style="opacity:0.8; margin-top: 0.5rem; display: block;">Server-ka AI (Supabase Edge Function) laguma xiri karin. Fadlan xaqiiji intarnetkaaga ama server-ka AI mar kale isku day.</small>`);
   }
 }
 
@@ -402,6 +409,35 @@ function showAISkinError(message) {
       <button class="btn btn-outline btn-sm" onclick="document.getElementById('ai-skin-result').style.display='none'; resetImageUpload();" style="margin-top: 1rem;">
         <i class="fa-solid fa-rotate-left"></i> Dib u Isku Day
       </button>
+    </div>
+  `;
+}
+
+// 
+// AUTHENTICATION REQUIRED PROMPT (Email & Password Required for Image Scan)
+// 
+function showAuthRequiredPrompt(message) {
+  const resultDiv = document.getElementById("ai-skin-result");
+  if (!resultDiv) return;
+  resultDiv.style.display = "block";
+  resultDiv.scrollIntoView({ behavior: "smooth", block: "start" });
+  resultDiv.innerHTML = `
+    <div style="text-align: center; padding: 2.5rem 1.5rem; background: var(--bg-card); border: 2px solid var(--gold-primary); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); animation: fadeIn 0.4s ease;">
+      <div style="width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-primary), var(--emerald-dark)); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; box-shadow: 0 6px 20px rgba(197,160,89,0.35);">
+        <i class="fa-solid fa-lock" style="font-size: 2.2rem; color: #FFF;"></i>
+      </div>
+      <h3 class="font-serif" style="font-size: 1.6rem; color: var(--emerald-dark); margin-bottom: 0.6rem;">Galitaanka Koontada Waa Muhiim</h3>
+      <p style="font-size: 0.95rem; color: var(--text-secondary); max-width: 520px; margin: 0 auto 1.75rem; line-height: 1.6;">
+        ${message || 'Fadlan geli emailkaaga iyo furaha sirta ah (Gal koontada ama Isdiiwaangeli) si AI-du ay u falanqeyso sawirkaaga uuna ugu kaydsamo koontadaada.'}
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <button class="btn btn-gold" onclick="navigateTo('auth'); switchAuthTab('login');" style="padding: 0.85rem 1.75rem; font-size: 0.95rem;">
+          <i class="fa-solid fa-right-to-bracket"></i> Gal Koontada (Login)
+        </button>
+        <button class="btn btn-primary" onclick="navigateTo('auth'); switchAuthTab('signup');" style="padding: 0.85rem 1.75rem; font-size: 0.95rem;">
+          <i class="fa-solid fa-user-plus"></i> Isdiiwaangeli (Sign Up)
+        </button>
+      </div>
     </div>
   `;
 }
